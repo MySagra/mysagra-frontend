@@ -38,6 +38,7 @@ ENV NEXT_PUBLIC_APP_NAME="MySagra"
 ENV API_URL=http://localhost:8000
 ENV PORT=3000
 EXPOSE 3000
+ENV HOSTNAME=0.0.0.0
 
 # Serve the app
 CMD ["node", "server.js"]

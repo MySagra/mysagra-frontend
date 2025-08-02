@@ -14,6 +14,11 @@ RUN yarn --frozen-lockfile
 FROM ${NODE} AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
+
+# Build arg for NEXT_PUBLIC_APP_NAME
+ARG NEXT_PUBLIC_APP_NAME="MySagra"
+ENV NEXT_PUBLIC_APP_NAME=$NEXT_PUBLIC_APP_NAME
+
 COPY . .
 
 RUN yarn build
@@ -21,8 +26,6 @@ RUN yarn build
 # Stage 3: Run the production
 FROM ${NODE} AS runner
 WORKDIR /app
-
-ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -34,11 +37,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
-ENV NEXT_PUBLIC_APP_NAME="MySagra"
-ENV API_URL=http://localhost:8000
-ENV PORT=3000
-EXPOSE 3000
+ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
+
+EXPOSE 3000
 
 # Serve the app
 CMD ["node", "server.js"]

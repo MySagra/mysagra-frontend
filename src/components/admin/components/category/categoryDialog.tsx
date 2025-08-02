@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Pencil, PlusCircle } from "lucide-react";
+import Image from "next/image";
 
 import {
     Dialog,
@@ -120,7 +121,7 @@ export default function CategoryDialog({ category, setCategories, setShow }: Cat
                         category ? updateCategory : createCategory
                     }
                     category={category}
-                />
+                />                
             </DialogContent>
         </Dialog>
     )

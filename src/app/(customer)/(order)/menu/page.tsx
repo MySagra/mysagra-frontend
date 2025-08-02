@@ -28,7 +28,7 @@ export default function Menu() {
                     : categories.map((category) => (
                         <MenuButton
                             key={category.id}
-                            src={"/category_images/" + category.id + ".jpg"}
+                            src={"/api/categories/" + category.id + "/image"}
                             href={`/menu/${category.id}`}
                             title={category.name}
                         />

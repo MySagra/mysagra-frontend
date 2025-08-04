@@ -8,19 +8,23 @@ import { FoodDialog } from "./foodDialog";
 import { Category } from "@/types/category";
 
 interface FoodListProps {
-    foods: Array<Food>
-    setFoods: React.Dispatch<React.SetStateAction<Food[]>>
+    initialFoods: Array<Food>
     categories: Array<Category>
 }
 
-export function FoodList({ foods, setFoods, categories }: FoodListProps) {
+export function FoodList({ initialFoods, categories }: FoodListProps) {
+    const [foods, setFoods] = useState(initialFoods);
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-            {
-                foods.map(food => (
-                    <FoodCard key={food.id} food={food} setFoods={setFoods} categories={categories} />
-                ))
-            }
+        <div className="flex flex-col gap-3 px-4 lg:px-6">
+            <FoodDialog setFoods={setFoods} categories={categories} />
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                {
+                    foods.map(food => (
+                        <FoodCard key={food.id} food={food} setFoods={setFoods} categories={categories} />
+                    ))
+                }
+            </div>
         </div>
     )
 }

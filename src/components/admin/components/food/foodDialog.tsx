@@ -57,6 +57,8 @@ interface FoodDialogProp {
 }
 
 export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogProp) {
+
+    
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {

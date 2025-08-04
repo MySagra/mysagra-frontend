@@ -4,12 +4,6 @@ import { revalidatePath } from 'next/cache';
 
 const API_URL = process.env.API_URL;
 
-export async function GET() {
-    const res = await fetch(`${API_URL}/foods`, { next: { revalidate: 3600 } });
-    const data = await res.json();
-    return NextResponse.json(data);
-}
-
 export async function POST(request: Request) {
     const body = await request.json();
     
@@ -26,8 +20,8 @@ export async function POST(request: Request) {
     });
 
     if (res.ok) {
-        revalidatePath("/api/foods");
-        revalidatePath("/api/foods/available");
+        revalidatePath("/admin/foods");
+        revalidatePath("/menu/[category]");
     }
 
     const data = await res.json();

@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Pagination,
   PaginationContent,
@@ -7,59 +9,58 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { Page } from "@/types/page";
+import { usePathname } from "next/navigation";
 
 interface OrderPaginationProps {
-  page: Page
-  index: number,
-  setIndex: React.Dispatch<React.SetStateAction<number>>,
+  pagination: Page
 }
 
-export default function OrderPagination({ page, index, setIndex }: OrderPaginationProps) {
+export default function OrderPagination({ pagination }: OrderPaginationProps) {
+  const pathname = usePathname();
 
-  function handleNext() {
-    if (!page.nextPage) return;
-    setIndex(page.nextPage);
-  }
-
-  function handlePrevious() {
-    if (!page.prevPage) return;
-    setIndex(page.prevPage);
-  }
-
-  function handleIndex(goToIndex: number | null){
-    if(!goToIndex) return;
-    setIndex(goToIndex);
-  }
+  const buildPageUrl = (pageNumber: number) => {
+    const pathParts = pathname.split('/');
+    pathParts[pathParts.length - 1] = pageNumber.toString();
+    return pathParts.join('/');
+  };
 
   return (
     <Pagination>
       <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" onClick={() => handlePrevious()} />
-        </PaginationItem>
         {
-          page.hasPrevPage ?
-            <PaginationItem>
-              <PaginationLink href="#" onClick={() => handleIndex(page.prevPage)}>{page.prevPage}</PaginationLink>
-            </PaginationItem>
+          pagination.prevPage ?
+            <>
+              <PaginationItem>
+                <PaginationPrevious href={buildPageUrl(pagination.prevPage)} />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href={buildPageUrl(pagination.prevPage)}>
+                  {pagination.prevPage}
+                </PaginationLink>
+              </PaginationItem>
+            </>
             : <></>
         }
 
         <PaginationItem>
-          <PaginationLink href="#" isActive>{index}</PaginationLink>
+          <PaginationLink href="#" isActive>{pagination.currentPage}</PaginationLink>
         </PaginationItem>
 
         {
-          page.nextPage ?
-            <PaginationItem>
-              <PaginationLink href="#" onClick={() => handleIndex(page.nextPage)}>{page.nextPage}</PaginationLink>
-            </PaginationItem>
+          pagination.nextPage ?
+            <>
+              <PaginationItem>
+                <PaginationLink href={buildPageUrl(pagination.nextPage)}>
+                  {pagination.nextPage}
+                </PaginationLink>
+              </PaginationItem>
+              <PaginationItem >
+                <PaginationNext href={buildPageUrl(pagination.nextPage)} />
+              </PaginationItem>
+            </>
             : <></>
         }
-        <PaginationItem >
-          <PaginationNext href="#" onClick={() => handleNext()} />
-        </PaginationItem>
       </PaginationContent>
-    </Pagination>
+    </Pagination >
   )
 }

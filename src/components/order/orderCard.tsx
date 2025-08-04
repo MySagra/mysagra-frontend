@@ -1,4 +1,4 @@
-'import clien'
+'use client'
 
 import { Order } from "@/types/order"
 

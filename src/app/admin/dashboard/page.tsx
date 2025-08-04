@@ -1,54 +1,18 @@
-"use client"
-
 import { AdminHeader } from "@/components/admin/layout/header";
-import { FoodStats, OrderStats, RevenueStats } from "@/types/stats";
-import { useEffect, useState } from "react";
 
 import OrderBarChart from "./_components/orderBarChart";
 import { OrderRadialChart } from "./_components/orderRadialChart";
 import { FoodPieChart } from "./_components/foodPieChart";
 import { RevenueAreaChart } from "./_components/revenueAreaChart";
 import React from "react";
+import { getOrderStats, getFoodsOrderedStats, getRevenueStats } from "@/services/stats.service";
 
-export default function Analytics() {
+export default async function Analytics() {
 
-    const [ordersStats, setOrdersStats] = useState<OrderStats>({ totalOrders: 0, ordersPerDay: [] });
-    const [foodsStats, setFoodsStats] = useState<FoodStats>({ foodOrdered: [] });
-    const [revenueStats, setRevenueStats] = useState<RevenueStats>({ revenuePerDay: [] })
-    const [totalFoods, setTotalFoods] = useState(0);
-
-    useEffect(() => {
-        fetch("/api/stats/total-orders", {
-            method: "GET",
-            credentials: "include"
-        }).then(async res => {
-            const data = await res.json();
-            if (res.ok) {
-                setOrdersStats(data);
-            }
-        })
-
-        fetch("/api/stats/foods-ordered", {
-            method: "GET",
-            credentials: "include"
-        }).then(async res => {
-            const data = await res.json();
-            if (res.ok) {
-                setFoodsStats(data);
-                setTotalFoods(data.foodOrdered.reduce((acc: number, curr: { quantity: string }) => acc + parseInt(curr.quantity), 0));
-            }
-        })
-
-        fetch("/api/stats/revenue", {
-            method: "GET",
-            credentials: "include"
-        }).then(async res => {
-            const data = await res.json();
-            if (res.ok) {
-                setRevenueStats(data);
-            }
-        })
-    }, [])
+    const ordersStats = await getOrderStats();
+    const foodsStats = await getFoodsOrderedStats();
+    const revenueStats = await getRevenueStats();
+    const totalFoods = foodsStats.foodOrdered.reduce((acc: number, curr: { quantity: string }) => acc + parseInt(curr.quantity), 0)
 
     return (
         <>

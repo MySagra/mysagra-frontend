@@ -45,7 +45,7 @@ const data = {
         },
         {
             title: "Orders",
-            url: "/admin/orders",
+            url: "/admin/orders/1",
             icon: Receipt,
         },
         {

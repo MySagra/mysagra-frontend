@@ -38,8 +38,8 @@ export async function PUT(
     });
 
     if (res.ok) {
-        revalidatePath("/api/foods");
-        revalidatePath("/api/foods/available");
+        revalidatePath("/admin/foods");
+        revalidatePath("/menu/[category]");
     }
 
     const data = await res.json();
@@ -62,8 +62,8 @@ export async function DELETE(
     });
 
     if (res.ok) {
-        revalidatePath("/api/foods");
-        revalidatePath("/api/foods/available");
+        revalidatePath("/admin/foods");
+        revalidatePath("/menu/[category]");
     }
 
     const data = await res.json();

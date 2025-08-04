@@ -24,7 +24,7 @@ export async function DELETE(
     });
 
     if (res.ok) {
-        revalidatePath("/api/users");
+        revalidatePath("/admin/users");
     }
 
     const data = await res.json();

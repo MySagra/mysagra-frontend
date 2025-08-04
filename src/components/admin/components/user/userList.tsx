@@ -2,17 +2,18 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { User } from "@/types/user";
+import { Role, User } from "@/types/user";
 import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { UserDialog } from "./userDialog";
 
 interface UserListProp {
-    users: Array<User>
-    setUsers: React.Dispatch<React.SetStateAction<User[]>>
+    initialUsers: Array<User>
+    roles: Array<Role>
 }
 
-export function UserList({ users, setUsers }: UserListProp) {
-
+export function UserList({ roles, initialUsers }: UserListProp) {
+    const [users, setUsers] = useState(initialUsers);
     const [thisUser, setThisUser] = useState({ username: "", role: "" });
 
     useEffect(() => {
@@ -22,12 +23,16 @@ export function UserList({ users, setUsers }: UserListProp) {
     }, [])
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
-            {
-                users.map(user => (
-                    <UserCard key={user.id} user={user} thisUser={thisUser.username} setUsers={setUsers} />
-                ))
-            }
+        <div className="flex flex-col gap-3 px-4 lg:px-6">
+            <UserDialog setUsers={setUsers} roles={roles} />
+
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
+                {
+                    users.map(user => (
+                        <UserCard key={user.id} user={user} thisUser={thisUser.username} setUsers={setUsers} />
+                    ))
+                }
+            </div>
         </div>
     )
 }

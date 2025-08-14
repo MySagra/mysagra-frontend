@@ -1,5 +1,4 @@
 import { AdminHeader } from "@/components/admin/layout/header"
-import OrderPagination from "@/components/order/orderPagination";
 import { getOrders } from "@/services/orders.service";
 import OrderList from "../_components/orderList";
 

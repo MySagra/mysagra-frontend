@@ -16,7 +16,7 @@ export async function GET(
     const token = (await cookieStore).get("token")?.value || "redondi";
     const { page } = await params;
 
-    const res = await fetch(`${API_URL}/orders/pages/${page}`, {
+    const res = await fetch(`${API_URL}/v1/orders/pages/${page}`, {
         method: "GET",
         headers: {
             "authorization": `Bearer ${token}`

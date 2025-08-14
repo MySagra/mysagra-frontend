@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/users`, {
+    const res = await fetch(`${API_URL}/v1/users`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

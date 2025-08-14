@@ -14,7 +14,7 @@ export async function GET(
 ) {
     const { id } = await params;
 
-    const res = await fetch(`${API_URL}/categories/${id}/image`, { next: { revalidate: 3600 }});
+    const res = await fetch(`${API_URL}/v1/categories/${id}/image`, { next: { revalidate: 3600 }});
 
     if (!res.ok) {
         return NextResponse.json({ error: 'Image not found' }, { status: res.status });
@@ -52,7 +52,7 @@ export async function PATCH(
         apiFormData.append('image', imageFile);
     }
 
-    const res = await fetch(`${API_URL}/categories/${id}/image`, {
+    const res = await fetch(`${API_URL}/v1/categories/${id}/image`, {
         method: "PATCH",
         headers: {
             "authorization": `Bearer ${token}`

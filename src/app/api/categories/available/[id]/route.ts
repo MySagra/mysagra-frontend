@@ -16,7 +16,7 @@ export async function PATCH(
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/categories/available/${id}`, {
+    const res = await fetch(`${API_URL}/v1/categories/available/${id}`, {
         method: "PATCH",
         headers: {
             "authorization": `Bearer ${token}`

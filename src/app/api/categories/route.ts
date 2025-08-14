@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 const API_URL = process.env.API_URL;
 
 export async function GET() {
-    const res = await fetch(`${API_URL}/categories`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_URL}/v1/categories`, { next: { revalidate: 3600 } });
     const data = await res.json();
     return NextResponse.json(data);
 }
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/categories`, {
+    const res = await fetch(`${API_URL}/v1/categories`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

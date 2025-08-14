@@ -18,7 +18,7 @@ export async function POST(request: Request) {
         foodsOrdered
     };
 
-    const res = await fetch(`${API_URL}/orders`, {
+    const res = await fetch(`${API_URL}/v1/orders`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ export async function GET() {
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/orders`, {
+    const res = await fetch(`${API_URL}/v1/orders`, {
         method: "GET",
         headers: {
             "authorization": `Bearer ${token}`

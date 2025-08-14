@@ -1,10 +1,8 @@
 "use server"
 
-import { useEffect, useState } from "react";
 import CategoriesList from "@/components/admin/components/category/categoriesList"
 import { AdminHeader } from "@/components/admin/layout/header"
 import { Category } from "@/types/category";
-import CategoryDialog from "@/components/admin/components/category/categoryDialog";
 import { getCategories } from "@/services/categories.service";
 
 export default async function Food() {

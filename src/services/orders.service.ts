@@ -2,7 +2,7 @@ import { getJwtFromCookie } from "@/lib/auth/verifyjwt";
 import { PageOrder } from "@/types/order";
 
 export async function getOrders(page: number): Promise<PageOrder> {
-    return await fetch(`${process.env.API_URL}/orders/pages/${page}`, {
+    return await fetch(`${process.env.API_URL}/v1/orders/pages/${page}`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${await getJwtFromCookie()}`
@@ -11,7 +11,7 @@ export async function getOrders(page: number): Promise<PageOrder> {
 }
 
 export async function getDailyOrders(): Promise<PageOrder> {
-    return await fetch(`${process.env.API_URL}/orders/day/today`, {
+    return await fetch(`${process.env.API_URL}/v1/orders/day/today`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${await getJwtFromCookie()}`

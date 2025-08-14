@@ -54,7 +54,7 @@ export async function DELETE(
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/foods/${id}`, {
+    const res = await fetch(`${API_URL}/v1/foods/${id}`, {
         method: "DELETE",
         headers: {
             "authorization": `Bearer ${token}`

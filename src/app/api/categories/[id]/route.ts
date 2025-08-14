@@ -18,7 +18,7 @@ export async function PUT(
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/categories/${id}`, {
+    const res = await fetch(`${API_URL}/v1/categories/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export async function DELETE(
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/categories/${id}`, {
+    const res = await fetch(`${API_URL}/v1/categories/${id}`, {
         method: "DELETE",
         headers: {
             "authorization": `Bearer ${token}`

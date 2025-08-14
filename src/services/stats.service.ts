@@ -2,7 +2,7 @@ import { getJwtFromCookie } from "@/lib/auth/verifyjwt";
 import { FoodStats, OrderStats, RevenueStats } from "@/types/stats";
 
 export async function getOrderStats(): Promise<OrderStats> {
-    return await fetch(`${process.env.API_URL}/stats/total-orders`, {
+    return await fetch(`${process.env.API_URL}/v1/stats/total-orders`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${await getJwtFromCookie()}`
@@ -11,7 +11,7 @@ export async function getOrderStats(): Promise<OrderStats> {
 }
 
 export async function getFoodsOrderedStats(): Promise<FoodStats> {
-    return await fetch(`${process.env.API_URL}/stats/foods-ordered`, {
+    return await fetch(`${process.env.API_URL}/v1/stats/foods-ordered`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${await getJwtFromCookie()}`
@@ -20,7 +20,7 @@ export async function getFoodsOrderedStats(): Promise<FoodStats> {
 }
 
 export async function getRevenueStats(): Promise<RevenueStats> {
-    return await fetch(`${process.env.API_URL}/stats/revenue`, {
+    return await fetch(`${process.env.API_URL}/v1/stats/revenue`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${await getJwtFromCookie()}`

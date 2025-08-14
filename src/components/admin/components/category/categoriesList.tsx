@@ -14,7 +14,6 @@ interface CategoriesPositionProps {
 
 export default function CategoriesList({ initialCategories, imageURL }: CategoriesPositionProps) {
     const [categories, setCategories] = useState(initialCategories);
-
     return (
         <div className="px-4 lg:px-6 flex flex-col gap-3">
             <CategoryDialog setCategories={setCategories} />

@@ -19,7 +19,9 @@ import {
 import { useState } from "react";
 
 export default function Recap() {
+    
     const { order, setOrder } = useOrder();
+    console.log(order)
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
@@ -30,7 +32,11 @@ export default function Recap() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(order)
+            body: JSON.stringify({
+                table: order.table,
+                customer: order.customer,
+                foodsOrdered: order.foodsOrdered
+            })
         }).then(async res => {
             const data = await res.json();
 

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Pencil, PlusCircle } from "lucide-react";
-import { Upload } from "@/components/ui/upload";
+import { UploadImage, UploadImageRef } from "@/components/ui/uploadImage";
 
 import {
     Dialog,
@@ -63,8 +63,8 @@ interface CategoryDialog {
 }
 
 export default function CategoryDialog({ category, setCategories, setShow, imageURL }: CategoryDialog) {
-    const uploadRef = useRef<{ reset: () => void }>(null);
-    
+    const uploadRef = useRef<UploadImageRef>(null);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -75,15 +75,23 @@ export default function CategoryDialog({ category, setCategories, setShow, image
     })
 
     function createCategory(values: z.infer<typeof formSchema>) {
+        const file = uploadRef.current?.getFile();
+        const categoryData = { ...values };
+        
+        if (file) {
+            categoryData.image = file;
+        }
+        
+        const { image, ...categoryDataWithoutImage } = categoryData;
         fetch("/api/categories", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(values),
+            body: JSON.stringify(categoryDataWithoutImage),
         }).then(async res => {
             let data = await res.json();
             if (!res.ok) return;
-            if (values.image) {
-                data = await (await uploadImage(values.image, data.id)).json();
+            if (image) {
+                data = await (await uploadImage(image, data.id)).json();
             }
             form.reset();
             uploadRef.current?.reset();
@@ -94,16 +102,24 @@ export default function CategoryDialog({ category, setCategories, setShow, image
     }
 
     function updateCategory(values: z.infer<typeof formSchema>) {
+        const file = uploadRef.current?.getFile();
+        const categoryData = { ...values };
+        
+        if (file) {
+            categoryData.image = file;
+        }
+        
+        const { image, ...categoryDataWithoutImage } = categoryData;
         fetch(`/api/categories/${category?.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(values),
+            body: JSON.stringify(categoryDataWithoutImage),
         }).then(async res => {
             let data = await res.json();
 
             if (!res.ok) return
-            if (values.image) {
-                data = await (await uploadImage(values.image, data.id)).json();
+            if (image) {
+                data = await (await uploadImage(image, data.id)).json();
             }
             if (setShow) setShow(data.available);
             setCategories(prev =>
@@ -166,7 +182,7 @@ export default function CategoryDialog({ category, setCategories, setShow, image
 
 interface CategoryFormProps {
     form: ReturnType<typeof useForm<z.infer<typeof formSchema>>>;
-    uploadRef: React.RefObject<{ reset: () => void } | null>;
+    uploadRef: React.RefObject<UploadImageRef | null>;
     onSubmit: (values: z.infer<typeof formSchema>) => void;
     category?: Category,
     imageURL?: string
@@ -211,17 +227,14 @@ function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: Categor
                 <FormField
                     control={form.control}
                     name="image"
-                    render={({ field }) => (
+                    render={() => (
                         <FormItem>
                             <FormLabel>Category Image</FormLabel>
                             <FormControl>
-                                <Upload
+                                <UploadImage 
                                     ref={uploadRef}
-                                    form={form}
-                                    fieldName="image"
-                                    accept="image/jpeg,image/png,image/jpg"
-                                    maxSize={5 * 1024 * 1024}
                                     initialPreview={imageURL}
+                                    category={category}
                                 />
                             </FormControl>
                             <FormDescription>

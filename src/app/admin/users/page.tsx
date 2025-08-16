@@ -1,4 +1,4 @@
-"use server"
+export const dynamic = "force-dynamic";
 
 import { UserList } from "@/components/admin/components/user/userList";
 import { AdminHeader } from "@/components/admin/layout/header"

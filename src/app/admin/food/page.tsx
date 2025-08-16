@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { FoodList } from "@/components/admin/components/food/foodlist";
 import { AdminHeader } from "@/components/admin/layout/header"
 import { getCategories } from "@/services/categories.service";

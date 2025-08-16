@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 const API_URL = process.env.API_URL;
 
 export async function GET() {
-    const res = await fetch(`${API_URL}/v1/categories`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_URL}/v1/categories`, { next: { tags: ['categories']}, });
     const data = await res.json();
     return NextResponse.json(data);
 }
@@ -26,8 +26,7 @@ export async function POST(request: Request) {
     });
 
     if (res.ok) {
-        revalidatePath("/api/categories");
-        revalidatePath("/api/categories/available");
+        revalidateTag('categories');
     }
 
     const data = await res.json();

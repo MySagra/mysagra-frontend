@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 const API_URL = process.env.API_URL;
 
@@ -20,8 +20,7 @@ export async function POST(request: Request) {
     });
 
     if (res.ok) {
-        revalidatePath("/admin/foods");
-        revalidatePath("/menu/[category]");
+        revalidateTag('foods');
     }
 
     const data = await res.json();

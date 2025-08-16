@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 interface Params {
     id: string;
@@ -24,7 +24,7 @@ export async function DELETE(
     });
 
     if (res.ok) {
-        revalidatePath("/admin/users");
+        revalidateTag('users');
     }
 
     const data = await res.json();

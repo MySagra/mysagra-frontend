@@ -1,4 +1,4 @@
-'use server'
+export const dynamic = "force-dynamic";
 
 import MenuButton from "@/components/menu/menuButton";
 import { Button } from "@/components/ui/button";

@@ -17,6 +17,7 @@ export async function GET(
     const { value } = await params;
 
     const res = await fetch(`${API_URL}/v1/orders/search/daily/${value}`, {
+        next: { tags: ['orders']},
         method: "GET",
         headers: {
             "authorization": `Bearer ${token}`

@@ -3,6 +3,7 @@ import { FoodStats, OrderStats, RevenueStats } from "@/types/stats";
 
 export async function getOrderStats(): Promise<OrderStats> {
     return await fetch(`${process.env.API_URL}/v1/stats/total-orders`, {
+        next: { tags: ['stats']},
         method: "GET",
         headers: {
             "Authorization": `Bearer ${await getJwtFromCookie()}`
@@ -12,6 +13,7 @@ export async function getOrderStats(): Promise<OrderStats> {
 
 export async function getFoodsOrderedStats(): Promise<FoodStats> {
     return await fetch(`${process.env.API_URL}/v1/stats/foods-ordered`, {
+        next: { tags: ['stats']},
         method: "GET",
         headers: {
             "Authorization": `Bearer ${await getJwtFromCookie()}`
@@ -21,6 +23,7 @@ export async function getFoodsOrderedStats(): Promise<FoodStats> {
 
 export async function getRevenueStats(): Promise<RevenueStats> {
     return await fetch(`${process.env.API_URL}/v1/stats/revenue`, {
+        next: { tags: ['stats']},
         method: "GET",
         headers: {
             "Authorization": `Bearer ${await getJwtFromCookie()}`

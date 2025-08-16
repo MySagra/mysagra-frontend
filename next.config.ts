@@ -4,8 +4,16 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   images: {
     remotePatterns: [
-      new URL(`${process.env.API_URL}/images/**`),
-      new URL(`${process.env.API_URL}/uploads/**`)
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '4300',
+      },
+      {
+        protocol: 'http',
+        hostname: 'mysagra-api',
+        port: '4300',
+      }
     ]
   }
 };

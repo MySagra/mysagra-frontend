@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 interface Params {
     id: string;
@@ -23,9 +23,10 @@ export async function DELETE(
         }
     });
 
-    revalidatePath("/api/stats/foods-ordered");
-    revalidatePath("/api/stats/revenue");
-    revalidatePath("/api/stats/total-orders");
+    if(res.ok){
+        revalidateTag('orders');
+        revalidateTag('stats');
+    }
 
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });

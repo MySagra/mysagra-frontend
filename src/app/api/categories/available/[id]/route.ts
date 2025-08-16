@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 interface Params {
     id: string;
@@ -23,8 +23,9 @@ export async function PATCH(
         }
     });
 
-    revalidatePath("/api/categories");
-    revalidatePath("/api/categories/available");
+    if(res.ok){
+        revalidateTag('categories');
+    }
 
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });

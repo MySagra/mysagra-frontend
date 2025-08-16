@@ -1,11 +1,11 @@
-"use server"
+export const dynamic = "force-dynamic";
 
 import CategoriesList from "@/components/admin/components/category/categoriesList"
 import { AdminHeader } from "@/components/admin/layout/header"
 import { Category } from "@/types/category";
 import { getCategories } from "@/services/categories.service";
 
-export default async function Food() {
+export default async function Categories() {
     const categories: Array<Category> = await getCategories();
     const imageURL = `${process.env.API_URL}/uploads/categories`
     return (

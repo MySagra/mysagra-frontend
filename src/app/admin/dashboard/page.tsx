@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { AdminHeader } from "@/components/admin/layout/header";
 
 import OrderBarChart from "./_components/orderBarChart";

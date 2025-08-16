@@ -17,6 +17,7 @@ export async function GET(
     const { page } = await params;
 
     const res = await fetch(`${API_URL}/v1/orders/pages/${page}`, {
+        next: { tags: ['oredrs']},
         method: "GET",
         headers: {
             "authorization": `Bearer ${token}`

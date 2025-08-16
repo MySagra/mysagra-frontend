@@ -47,12 +47,17 @@ const formSchema = z.object({
         .optional()
         .refine((file) => {
             if (!file) return true;
+            console.log("Validating file size:", file.size, "bytes");
+            return file.size <= 5 * 1024 * 1024; // Max 5MB
+        }, "File must be less than 5MB")
+        .refine((file) => {
+            if (!file) return true;
             return file.size <= 5 * 1024 * 1024; // Max 5MB
         }, "File must be less than 5MB")
         .refine((file) => {
             if (!file) return true;
             return ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type);
-        }, "Only JPEG and PNG files are allowed"),
+        }, "Only JPG, JPEG and PNG files are allowed"),
 })
 
 interface CategoryDialog {
@@ -227,7 +232,7 @@ function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: Categor
                 <FormField
                     control={form.control}
                     name="image"
-                    render={() => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>Category Image</FormLabel>
                             <FormControl>
@@ -235,10 +240,14 @@ function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: Categor
                                     ref={uploadRef}
                                     initialPreview={imageURL}
                                     category={category}
+                                    onChange={(file: File | undefined) => {
+                                        console.log("File changed:", file);
+                                        field.onChange(file);
+                                    }}
                                 />
                             </FormControl>
                             <FormDescription>
-                                Upload an image for this category (optional, max 5MB).
+                                Upload an image for this category (optional, max 5MB). Only JPEG and PNG files are supported.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>

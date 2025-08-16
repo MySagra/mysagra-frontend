@@ -1,3 +1,5 @@
+"use client"
+
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { OrderStats } from "@/types/stats";

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 interface Params {
     id: string;
@@ -13,7 +13,7 @@ export async function GET(
     { params }: { params: Promise<Params> }
 ) {
     const { id } = await params;
-    const res = await fetch(`${API_URL}/foods/${id}`);
+    const res = await fetch(`${API_URL}/foods/${id}`, { next: { tags: ['foods'] }});
     const data = await res.json();
     return NextResponse.json(data);
 }
@@ -38,8 +38,7 @@ export async function PUT(
     });
 
     if (res.ok) {
-        revalidatePath("/api/foods");
-        revalidatePath("/api/foods/available");
+        revalidateTag('foods');
     }
 
     const data = await res.json();
@@ -54,7 +53,7 @@ export async function DELETE(
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/foods/${id}`, {
+    const res = await fetch(`${API_URL}/v1/foods/${id}`, {
         method: "DELETE",
         headers: {
             "authorization": `Bearer ${token}`
@@ -62,8 +61,7 @@ export async function DELETE(
     });
 
     if (res.ok) {
-        revalidatePath("/api/foods");
-        revalidatePath("/api/foods/available");
+        revalidateTag('foods');
     }
 
     const data = await res.json();

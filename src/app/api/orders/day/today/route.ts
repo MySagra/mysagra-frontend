@@ -8,7 +8,8 @@ export async function GET() {
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/orders/day/today`, {
+    const res = await fetch(`${API_URL}/v1/orders/day/today`, {
+        next: { tags: ['oredrs']},
         method: "GET",
         headers: {
             "authorization": `Bearer ${token}`

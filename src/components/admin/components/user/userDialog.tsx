@@ -27,7 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Role, User } from "@/types/user"
 
 const formSchema = z.object({
-    username: z.string().min(2).max(50),
+    username: z.string().min(4).max(50),
     password: z.string().min(8),
     roleId: z.number()
 })

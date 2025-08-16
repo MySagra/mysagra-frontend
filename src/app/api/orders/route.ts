@@ -1,7 +1,7 @@
 import { FoodsOrderd } from '@/types/foodOrdered';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 const API_URL = process.env.API_URL;
 
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
         foodsOrdered
     };
 
-    const res = await fetch(`${API_URL}/orders`, {
+    const res = await fetch(`${API_URL}/v1/orders`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -29,9 +29,8 @@ export async function POST(request: Request) {
     const data = await res.json();
 
     if (res.ok) {
-        revalidatePath("/api/stats/foods-ordered");
-        revalidatePath("/api/stats/revenue");
-        revalidatePath("/api/stats/total-orders");
+        revalidateTag('orders');
+        revalidateTag('stats');
     }
 
     return NextResponse.json(data);
@@ -42,7 +41,7 @@ export async function GET() {
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/orders`, {
+    const res = await fetch(`${API_URL}/v1/orders`, {
         method: "GET",
         headers: {
             "authorization": `Bearer ${token}`

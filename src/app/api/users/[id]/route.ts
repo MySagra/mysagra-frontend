@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 interface Params {
     id: string;
@@ -16,7 +16,7 @@ export async function DELETE(
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/users/${id}`, {
+    const res = await fetch(`${API_URL}/v1/users/${id}`, {
         method: "DELETE",
         headers: {
             "authorization": `Bearer ${token}`
@@ -24,7 +24,7 @@ export async function DELETE(
     });
 
     if (res.ok) {
-        revalidatePath("/api/users");
+        revalidateTag('users');
     }
 
     const data = await res.json();

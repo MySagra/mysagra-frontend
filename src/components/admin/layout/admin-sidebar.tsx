@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sidebar"
 import { NavMain } from "./nav-main"
 
-import { Gauge, Pizza, Receipt, Martini, Users, ArrowLeftRight, Ticket } from "lucide-react"
+import { Gauge, Pizza, Receipt, Martini, Users, ArrowLeftRight } from "lucide-react"
 import Logo from "@/components/logo"
 import { NavUser } from "./nav-user"
 import { useEffect, useState } from "react"
@@ -29,11 +29,6 @@ const data = {
             icon: Users,
         },
         {
-            title: "Event",
-            url: "#",
-            icon: Ticket,
-        },
-        {
             title: "Categories",
             url: "/admin/categories",
             icon: Martini,
@@ -45,7 +40,7 @@ const data = {
         },
         {
             title: "Orders",
-            url: "/admin/orders",
+            url: "/admin/orders/1",
             icon: Receipt,
         },
         {

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Pencil, PlusCircle } from "lucide-react";
+import { UploadImage, UploadImageRef } from "@/components/ui/uploadImage";
 
 import {
     Dialog,
@@ -31,41 +32,74 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Category } from "@/types/category";
+import { useRef } from "react";
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
-    position: z.string({ required_error: "Field required" })
+    position: z.string()
+        .min(1, "Position is required")
         .refine(val => !isNaN(Number(val)), {
             message: "Required a number"
         }),
-    available: z.boolean()
+    available: z.boolean(),
+    image: z
+        .instanceof(File)
+        .optional()
+        .refine((file) => {
+            if (!file) return true;
+            console.log("Validating file size:", file.size, "bytes");
+            return file.size <= 5 * 1024 * 1024; // Max 5MB
+        }, "File must be less than 5MB")
+        .refine((file) => {
+            if (!file) return true;
+            return file.size <= 5 * 1024 * 1024; // Max 5MB
+        }, "File must be less than 5MB")
+        .refine((file) => {
+            if (!file) return true;
+            return ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type);
+        }, "Only JPG, JPEG and PNG files are allowed"),
 })
 
 interface CategoryDialog {
     category?: Category
     setCategories: React.Dispatch<React.SetStateAction<Category[]>>
     setShow?: React.Dispatch<React.SetStateAction<boolean>>
+    imageURL?: string
 }
 
-export default function CategoryDialog({ category, setCategories, setShow }: CategoryDialog) {
+export default function CategoryDialog({ category, setCategories, setShow, imageURL }: CategoryDialog) {
+    const uploadRef = useRef<UploadImageRef>(null);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: category?.name || "",
-            position: category?.position !== undefined ? String(category.position) : "",
-            available: category?.available
+            position: category?.position !== undefined ? String(category.position) : "1",
+            available: category?.available || true
         }
     })
 
     function createCategory(values: z.infer<typeof formSchema>) {
+        const file = uploadRef.current?.getFile();
+        const categoryData = { ...values };
+        
+        if (file) {
+            categoryData.image = file;
+        }
+        
+        const { image, ...categoryDataWithoutImage } = categoryData;
         fetch("/api/categories", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(values),
+            body: JSON.stringify(categoryDataWithoutImage),
         }).then(async res => {
-            const data = await res.json();
+            let data = await res.json();
             if (!res.ok) return;
+            if (image) {
+                data = await (await uploadImage(image, data.id)).json();
+            }
             form.reset();
+            uploadRef.current?.reset();
             setCategories(prev =>
                 [...prev, data].sort((a, b) => Number(a.position) - Number(b.position))
             );
@@ -73,13 +107,25 @@ export default function CategoryDialog({ category, setCategories, setShow }: Cat
     }
 
     function updateCategory(values: z.infer<typeof formSchema>) {
+        const file = uploadRef.current?.getFile();
+        const categoryData = { ...values };
+        
+        if (file) {
+            categoryData.image = file;
+        }
+        
+        const { image, ...categoryDataWithoutImage } = categoryData;
         fetch(`/api/categories/${category?.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(values),
+            body: JSON.stringify(categoryDataWithoutImage),
         }).then(async res => {
-            const data = await res.json();
+            let data = await res.json();
+
             if (!res.ok) return
+            if (image) {
+                data = await (await uploadImage(image, data.id)).json();
+            }
             if (setShow) setShow(data.available);
             setCategories(prev =>
                 prev
@@ -87,6 +133,17 @@ export default function CategoryDialog({ category, setCategories, setShow }: Cat
                     .sort((a, b) => Number(a.position) - Number(b.position))
             );
         })
+    }
+
+    async function uploadImage(image: File, id: string) {
+        const imageFormData = new FormData();
+        imageFormData.append('image', image);
+
+        return await fetch(`/api/categories/${id}/image`, {
+            method: "PATCH",
+            credentials: "include",
+            body: imageFormData,
+        });
     }
 
     return (
@@ -116,10 +173,12 @@ export default function CategoryDialog({ category, setCategories, setShow }: Cat
                 </DialogHeader>
                 <CategoryForm
                     form={form}
+                    uploadRef={uploadRef}
                     onSubmit={
                         category ? updateCategory : createCategory
                     }
                     category={category}
+                    imageURL={imageURL}
                 />
             </DialogContent>
         </Dialog>
@@ -128,11 +187,13 @@ export default function CategoryDialog({ category, setCategories, setShow }: Cat
 
 interface CategoryFormProps {
     form: ReturnType<typeof useForm<z.infer<typeof formSchema>>>;
+    uploadRef: React.RefObject<UploadImageRef | null>;
     onSubmit: (values: z.infer<typeof formSchema>) => void;
-    category?: Category
+    category?: Category,
+    imageURL?: string
 }
 
-function CategoryForm({ form, onSubmit, category }: CategoryFormProps) {
+function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: CategoryFormProps) {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -163,6 +224,30 @@ function CategoryForm({ form, onSubmit, category }: CategoryFormProps) {
                             </FormControl>
                             <FormDescription>
                                 Category display order.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="image"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Category Image</FormLabel>
+                            <FormControl>
+                                <UploadImage 
+                                    ref={uploadRef}
+                                    initialPreview={imageURL}
+                                    category={category}
+                                    onChange={(file: File | undefined) => {
+                                        console.log("File changed:", file);
+                                        field.onChange(file);
+                                    }}
+                                />
+                            </FormControl>
+                            <FormDescription>
+                                Upload an image for this category (optional, max 5MB). Only JPEG and PNG files are supported.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>

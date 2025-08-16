@@ -1,3 +1,5 @@
+"use client"
+
 import {
     Dialog,
     DialogContent,
@@ -27,6 +29,7 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Category } from "@/types/category"
+import { useEffect } from "react"
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
@@ -45,7 +48,9 @@ const formSchema = z.object({
         }, {
             message: "Il prezzo può avere massimo 2 decimali"
         }),
-    categoryId: z.number().min(0, "Category ID not valid!"),
+    categoryId: z.number({
+        required_error: "Please select a category"
+    }).min(0, "Please select a category"),
     available: z.boolean()
 })
 
@@ -57,16 +62,46 @@ interface FoodDialogProp {
 }
 
 export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogProp) {
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: food?.name || "",
             description: food?.description || "",
             price: food?.price.toString() || "15.69",
-            categoryId: food?.categoryId || 1,
-            available: food?.available
+            categoryId: food?.categoryId || (categories.length > 0 ? categories[0].id : undefined),
+            available: food?.available ?? true
         }
     })
+
+    useEffect(() => {
+        if (!food) {
+            form.setValue('available', true);
+            if(categories.length > 0 && !form.getValues('categoryId')){
+                form.setValue('categoryId', categories[0].id);
+            }
+        }
+    }, [categories, food, form]);
+
+    useEffect(() => {
+        if (food) {
+            form.reset({
+                name: food.name || "",
+                description: food.description || "",
+                price: food.price?.toString() || "",
+                categoryId: food.categoryId,
+                available: food.available ?? true
+            });
+        } else {
+            form.reset({
+                name: "",
+                description: "",
+                price: "",
+                categoryId: categories.length > 0 ? categories[0].id : undefined,
+                available: true
+            });
+        }
+    }, [food, categories, form]);
 
     function createFood(values: z.infer<typeof formSchema>) {
         fetch("/api/foods", {

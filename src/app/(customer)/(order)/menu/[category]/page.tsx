@@ -1,5 +1,3 @@
-'use server'
-
 import FoodCard from "@/components/food/foodCard";
 import { getFoodsAvailable } from "@/services/foods.service";
 import { Food } from "@/types/food";

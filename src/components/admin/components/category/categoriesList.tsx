@@ -7,7 +7,6 @@ import { Eye, EyeOff, Trash2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import CategoryDialog from "./categoryDialog";
 import { DialogAction } from "@/components/ui/dialogAction";
-import { DialogTrigger } from "@radix-ui/react-dialog";
 
 interface CategoriesPositionProps {
     initialCategories: Array<Category>

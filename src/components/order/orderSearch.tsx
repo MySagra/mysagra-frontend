@@ -39,7 +39,7 @@ export default function OrderSearch({ setOrders, className, checkAll = false, te
                 }
                 if (res.status == 404) {
                     toast(
-                        <p>No results found for <span className="font-bold">"{text}"</span></p>,
+                        <p>No results found for <span className="font-bold">&quot;{text}&quot;</span></p>,
                         {
                             description: "Try searching with different keywords"
                         }

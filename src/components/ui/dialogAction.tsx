@@ -1,5 +1,4 @@
 import { Button, buttonVariants } from "./button";
-import { Trash2, LucideIcon } from "lucide-react";
 import {
     Dialog,
     DialogContent,

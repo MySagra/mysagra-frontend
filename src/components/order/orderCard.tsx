@@ -14,6 +14,7 @@ import {
 import DialogRecap from "../recap/dialogRecap"
 import { Button } from "../ui/button"
 import { Trash2 } from "lucide-react"
+import { DialogAction } from "../ui/dialogAction"
 
 interface OrderCardProps {
     order: Order
@@ -25,7 +26,7 @@ interface OrderCardProps {
 export default function OrderCard({ order, value = "", adminView = false, setOrders }: OrderCardProps) {
 
     function deleteOrder() {
-        if(!setOrders) return;
+        if (!setOrders) return;
 
         fetch(`/api/orders/${order.id}`, {
             method: "DELETE",
@@ -52,9 +53,22 @@ export default function OrderCard({ order, value = "", adminView = false, setOrd
                     {
                         adminView
                             ?
-                            <Button variant="destructive" size={"icon"} onClick={() => deleteOrder()}>
-                                <Trash2 />
-                            </Button>
+                            <DialogAction
+                                title="Are you sure you want to delete this order?"
+                                variant={'destructive'}
+                                action={() => deleteOrder()}
+                                buttonText="Delete"
+                                trigger={
+                                    <Button variant={'destructive'} size={"icon"} className="size-7">
+                                        <Trash2 />
+                                    </Button>
+                                }
+                            >
+                                <p className="font-normal text-sm">
+                                    This action <span className="font-bold">cannot be undone</span>,
+                                    if you delete the order the stats will change.
+                                </p>
+                            </DialogAction>
                             :
                             <></>
                     }
@@ -72,7 +86,7 @@ export default function OrderCard({ order, value = "", adminView = false, setOrd
             </CardHeader>
             <CardContent>
                 <p className="flex flex-row gap-1 items-center">
-                    ID Ordine:
+                    Order ID:
                     {
                         order.id.toLowerCase() === value.toLowerCase()
                             ?
@@ -82,7 +96,7 @@ export default function OrderCard({ order, value = "", adminView = false, setOrd
                     }
                 </p>
                 <p className="flex flex-row gap-1 items-center">
-                    Tavolo:
+                    Table:
                     {
                         value && order.table.includes(value)
                             ?

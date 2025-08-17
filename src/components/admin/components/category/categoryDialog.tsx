@@ -82,11 +82,11 @@ export default function CategoryDialog({ category, setCategories, setShow, image
     function createCategory(values: z.infer<typeof formSchema>) {
         const file = uploadRef.current?.getFile();
         const categoryData = { ...values };
-        
+
         if (file) {
             categoryData.image = file;
         }
-        
+
         const { image, ...categoryDataWithoutImage } = categoryData;
         fetch("/api/categories", {
             method: "POST",
@@ -109,11 +109,11 @@ export default function CategoryDialog({ category, setCategories, setShow, image
     function updateCategory(values: z.infer<typeof formSchema>) {
         const file = uploadRef.current?.getFile();
         const categoryData = { ...values };
-        
+
         if (file) {
             categoryData.image = file;
         }
-        
+
         const { image, ...categoryDataWithoutImage } = categoryData;
         fetch(`/api/categories/${category?.id}`, {
             method: "PUT",
@@ -236,7 +236,7 @@ function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: Categor
                         <FormItem>
                             <FormLabel>Category Image</FormLabel>
                             <FormControl>
-                                <UploadImage 
+                                <UploadImage
                                     ref={uploadRef}
                                     initialPreview={imageURL}
                                     category={category}

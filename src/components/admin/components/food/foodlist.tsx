@@ -6,6 +6,7 @@ import { Eye, EyeOff, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { FoodDialog } from "./foodDialog";
 import { Category } from "@/types/category";
+import { DialogAction } from "@/components/ui/dialogAction";
 
 interface FoodListProps {
     initialFoods: Array<Food>
@@ -65,9 +66,21 @@ function FoodCard({ food, setFoods, categories }: FoodCardProps) {
     return (
         <div className="bg-secondary p-3 rounded-md flex place-content-between">
             <div className="flex flex-row gap-1.5 items-center">
-                <Button variant={"destructive"} size={"icon"} className="size-7" onClick={() => deleteFood()}>
-                    <Trash2 />
-                </Button>
+                <DialogAction
+                    title="Are you sure you want to delete this food?"
+                    variant={'destructive'}
+                    action={() => deleteFood()}
+                    buttonText="Delete"
+                    trigger={
+                        <Button variant={'destructive'} size={"icon"} className="size-7">
+                            <Trash2 />
+                        </Button>
+                    }
+                >
+                    <p className="font-normal text-sm">
+                        This action <span className="font-bold">cannot be undone</span>
+                    </p>
+                </DialogAction>
                 {food.name}
             </div>
 

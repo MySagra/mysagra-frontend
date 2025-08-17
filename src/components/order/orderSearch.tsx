@@ -39,9 +39,9 @@ export default function OrderSearch({ setOrders, className, checkAll = false, te
                 }
                 if (res.status == 404) {
                     toast(
-                        <p>Nessun ordine trovato con valore di ricerca <span className="font-bold">{text}</span></p>,
+                        <p>No results found for <span className="font-bold">"{text}"</span></p>,
                         {
-                            description: "Error 404"
+                            description: "Try searching with different keywords"
                         }
                     );
                 }

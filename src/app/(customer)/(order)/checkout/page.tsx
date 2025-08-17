@@ -28,50 +28,50 @@ export default function Checkout() {
     return (
         <div className="min-h-screen w-full flex flex-col gap-16 place-content-start items-center p-12">
             <div className="flex flex-col gap-3 items-center">
-                <h1 className="font-bold text-xl text-center">Questo è il codice del tuo ordine, <span className="text-red-500">non dimenticarlo:</span></h1>
+                <h1 className="font-bold text-xl text-center">This is your order code, <span className="text-red-500">don&apos;t forget it:</span></h1>
                 <span className="font-bold font-mono text-9xl text-yellow-800">{order?.id}</span>
             </div>
 
             <div className="flex flex-col gap-0.5 items-center">
-                <h3 className="text-2xl font-semibold">Devi pagare {order?.price}€</h3>
-                <p className="py-5 text-gray-600 text-center">*Prepara i soldi per velocizzare il processo😉</p>
+                <h3 className="text-2xl font-semibold">You need to pay €{order?.price}</h3>
+                <p className="py-5 text-gray-600 text-center">*Have your money ready to speed up the process😉</p>
             </div>
 
 
             <div className="flex flex-col gap-2.5 text-lg font-normal">
-                <h1 className="font-semibold text-2xl text-center">Cosa devo fare ora?</h1>
+                <h1 className="font-semibold text-2xl text-center">What should I do now?</h1>
                 <div className="flex flex-row gap-1">
                     👉
-                    <p>Comunicalo in cassa</p>
+                    <p>Tell the cashier your order code</p>
                 </div>
                 <div className="flex flex-row gap-1">
                     🤑
-                    <p> Effettua il pagamento</p>
+                    <p>Make the payment</p>
                 </div>
                 <div className="flex flex-row gap-1">
                     🍸
-                    <p>Dopo aver pagato le bevande dovrai ritirarle al bar</p>
+                    <p>After paying, collect your drinks at the bar</p>
                 </div>
                 <div className="flex flex-row gap-1">
                     🍕
-                    <p>Il tuo ordine sarà servito direttamente al tavolo</p>
+                    <p>Your food order will be served directly to your table</p>
                 </div>
             </div>
             <div className="w-full inset-shadow-xs fixed bottom-0 p-3 bg-secondary flex place-content-center">
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button>
-                            Crea un nuovo Ordine
+                            Create a New Order
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Sei sicuro di voler creare un nuovo ordine</DialogTitle>
+                            <DialogTitle>Are you sure you want to create a new order?</DialogTitle>
                             <DialogDescription>
-                                Creando un nuovo ordine non potrai più tornare a questa schermata,
-                                ricordati il
-                                <span className="font-bold"> codice ordine.</span><br />
-                                Ma non preoccuparti troppo è sempre reperibile dalle cassiere😉
+                                By creating a new order you won&apos;t be able to return to this screen,
+                                remember your
+                                <span className="font-bold"> order code.</span><br />
+                                But don&apos;t worry too much, it&apos;s always available from the cashiers😉
                             </DialogDescription>
                         </DialogHeader>
                         <DialogFooter>
@@ -81,7 +81,7 @@ export default function Checkout() {
                                     router.push("/");
                                 }}
                             >
-                                Conferma creazione
+                                Confirm Creation
                             </Button>
                         </DialogFooter>
                     </DialogContent>

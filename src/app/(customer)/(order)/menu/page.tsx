@@ -26,7 +26,7 @@ export default async function Menu() {
                 <Link href={"/recap"}>
                     <Button variant={"outline"} className="w-full">
                         <ShoppingCart />
-                        Vai al carrello
+                        Go to cart
                     </Button>
                 </Link>
             </div>

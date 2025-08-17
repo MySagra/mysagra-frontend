@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, Trash2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import CategoryDialog from "./categoryDialog";
+import { DialogAction } from "@/components/ui/dialogAction";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 
 interface CategoriesPositionProps {
     initialCategories: Array<Category>
@@ -65,9 +67,22 @@ function CategoryCard({ category, setCategories, imageURL }: CategoryCardProps) 
         <div className="w-full flex place-content-center">
             <div className="bg-secondary p-3 rounded-sm flex flex-row gap-3 place-content-between w-[400px] items-center">
                 <div className="flex flex-row gap-1 items-center">
-                    <Button variant={"destructive"} size={"icon"} className="size-7" onClick={() => deleteCategory()}>
-                        <Trash2 />
-                    </Button>
+                    <DialogAction
+                        title="Are you sure you want to delete this category?"
+                        variant={'destructive'}
+                        action={() => deleteCategory()}
+                        buttonText="Delete"
+                        trigger={
+                            <Button variant={'destructive'} size={"icon"} className="size-7">
+                                <Trash2 />
+                            </Button>
+                        }
+                    >
+                        <p className="font-normal text-sm">
+                            This action <span className="font-bold">cannot be undone</span>,
+                            if you delete the category you will lost all foods in this category!
+                        </p>
+                    </DialogAction>
                     <h1>
                         {category.name}
                     </h1>

@@ -90,9 +90,9 @@ export default function Home() {
                   name="customer"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Cliente</FormLabel>
+                      <FormLabel>Customer</FormLabel>
                       <FormControl>
-                        <Input placeholder="Nome e Cognome" {...field} />
+                        <Input placeholder="Name and Surname" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -103,9 +103,9 @@ export default function Home() {
                   name="table"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tavolo</FormLabel>
+                      <FormLabel>Table</FormLabel>
                       <FormControl>
-                        <Input placeholder="Numero tavolo" {...field} />
+                        <Input placeholder="Table number" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -120,7 +120,7 @@ export default function Home() {
                 >
                   Cancella
                 </Button>
-                <Button type="submit">Avanti</Button>
+                <Button type="submit">Next</Button>
               </CardFooter>
             </Card>
           </div >

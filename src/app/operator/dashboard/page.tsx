@@ -30,7 +30,7 @@ export default function Dashboard() {
                 }
                 if (res.status == 404) {
                     toast(
-                        "Nessun ordine trovato!",
+                        "Orders not found!",
                         {
                             description: "Error 404"
                         }
@@ -68,11 +68,11 @@ export default function Dashboard() {
                     {
                         orderUpdateLoading ?
                             <Button className="bg-blue-500 hover:bg-blue-400 text-white" disabled>
-                                <Loader2Icon className="animate-spin" /> Cercando gli ultimi aggiornamenti
+                                <Loader2Icon className="animate-spin" /> Searching last orders
                             </Button>
                             :
                             <Button className="bg-blue-500 hover:bg-blue-400 text-white" onClick={() => lastOrders()}>
-                                <Receipt /> Visualizza tutti gli ordini giornalieri
+                                <Receipt /> Fetch last orders
                             </Button>
                     }
 
@@ -89,7 +89,7 @@ export default function Dashboard() {
             </main>
             <div className="flex items-center place-content-center p-5 fixed  w-full  bottom-0 bg-white">
                 <Button variant="destructive" className="w-[250px]" onClick={() => logOut()}>
-                    Esci <LogOut />
+                    Logout <LogOut />
                 </Button>
             </div>
         </>

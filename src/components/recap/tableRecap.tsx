@@ -42,12 +42,12 @@ export default function TableRecap({ order, smallView = false, className }: Tabl
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead className={`${smallView ? "w-[100px]" : "w-[200px]"}`}>Alimento</TableHead>
+                    <TableHead className={`${smallView ? "w-[100px]" : "w-[200px]"}`}>Food</TableHead>
                     {
                         smallView ? <></> : <TableHead></TableHead>
                     }
-                    <TableHead className="text-right">Quantità</TableHead>
-                    <TableHead className="text-right">Prezzo</TableHead>
+                    <TableHead className="text-right">Quantity</TableHead>
+                    <TableHead className="text-right">Price</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -59,7 +59,7 @@ export default function TableRecap({ order, smallView = false, className }: Tabl
             </TableBody>
             <TableFooter className={cn("bg-secondary", className)}>
                 <TableRow>
-                    <TableCell>Totale</TableCell>
+                    <TableCell>Total</TableCell>
                     <TableCell></TableCell>
                     {
                         smallView ? <></> : <TableCell></TableCell>

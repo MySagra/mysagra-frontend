@@ -70,34 +70,34 @@ export default function Recap() {
 
             <div className="flex flex-row gap-2 place-content-center">
                 <Button onClick={() => clearOrder()} variant="destructive">
-                    Svuota Carrello
+                    Clear Cart
                 </Button>
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button
                             disabled={order.foodsOrdered.length === 0}
                         >
-                            Crea Ordine
+                            Create Order
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Sei sicuro di voler ordinare?</DialogTitle>
+                            <DialogTitle>Are you sure you want to place this order?</DialogTitle>
                             <DialogDescription>
-                                La tua azione sta per generare un ordine alla cassa,
-                                ti verrà dato un codice dell&apos;ordine<br />
-                                <span className="font-bold"> non dimenticarlo!</span>
+                                Your action will generate an order at the checkout,
+                                you will be given an order code<br />
+                                <span className="font-bold">don&apos;t forget it!</span>
                             </DialogDescription>
                         </DialogHeader>
                         <DialogFooter>
                             {
                                 loading ?
                                     <Button className="text-white" disabled>
-                                        <Loader2Icon className="animate-spin" /> Stiamo creando il tuo ordine
+                                        <Loader2Icon className="animate-spin" /> Creating your order
                                     </Button>
                                     :
                                     <Button onClick={() => createOrder()}>
-                                        Conferma Ordine
+                                        Confirm Order
                                     </Button>
                             }
                         </DialogFooter>

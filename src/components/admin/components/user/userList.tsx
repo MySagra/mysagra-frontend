@@ -6,6 +6,7 @@ import { Role, User } from "@/types/user";
 import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { UserDialog } from "./userDialog";
+import { DialogAction } from "@/components/ui/dialogAction";
 
 interface UserListProp {
     initialUsers: Array<User>
@@ -69,15 +70,21 @@ function UserCard({ user, thisUser, setUsers }: UserCardProp) {
                     </Badge>
                 </p>
             </div>
-            <Button
-                variant={"destructive"}
-                size={"icon"}
-                disabled={thisUser == user.username}
-                onClick={() => deleteUser()}
+            <DialogAction
+                title="Are you sure you want to delete this user?"
+                variant={'destructive'}
+                action={() => deleteUser()}
+                buttonText="Delete"
+                trigger={
+                    <Button disabled={thisUser == user.username} variant={'destructive'} size={"icon"} className="size-7">
+                        <Trash2 />
+                    </Button>
+                }
             >
-                <Trash2 />
-            </Button>
-
+                <p className="font-normal text-sm">
+                    This action <span className="font-bold">cannot be undone</span>
+                </p>
+            </DialogAction>
         </div>
     )
 }

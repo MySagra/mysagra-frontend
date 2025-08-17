@@ -21,16 +21,16 @@ export default function DialogRecap({ order }: DialogRecapProps) {
         <Dialog>
             <DialogTrigger asChild>
                 <Button>
-                    Visualizza Ordine
+                    View Order
                 </Button>
             </DialogTrigger>
             <DialogContent className=" h-[500px]">
                 <DialogHeader>
-                    <DialogTitle>Ordine di {order.customer}</DialogTitle>
+                    <DialogTitle>Order for {order.customer}</DialogTitle>
                     <DialogDescription asChild>
                         <div className="flex flex-row gap-3 place-content-between">
                             <nav>
-                                {new Date(order.dateTime).toLocaleString("it-IT", {
+                                {new Date(order.dateTime).toLocaleString("en-US", {
                                     day: "2-digit",
                                     month: "2-digit",
                                     year: "numeric",
@@ -39,7 +39,7 @@ export default function DialogRecap({ order }: DialogRecapProps) {
                                 })}
                             </nav>
                             <nav>
-                                Tavolo: {order.table}
+                                Table: {order.table}
                             </nav>
                             <nav>
                                 ID: <span className="font-mono">{order.id}</span>

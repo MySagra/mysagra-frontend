@@ -77,7 +77,7 @@ export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogPr
     useEffect(() => {
         if (!food) {
             form.setValue('available', true);
-            if(categories.length > 0 && !form.getValues('categoryId')){
+            if (categories.length > 0 && !form.getValues('categoryId')) {
                 form.setValue('categoryId', categories[0].id);
             }
         }

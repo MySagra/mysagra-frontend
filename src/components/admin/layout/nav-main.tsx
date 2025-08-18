@@ -8,8 +8,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { usePathname, useRouter } from "next/navigation"
-
+// Use next-intl aware navigation utilities
+import { usePathname, useRouter } from "@/i18n/navigation"
 
 export function NavMain({
   items,
@@ -23,7 +23,7 @@ export function NavMain({
 
   const pathname = usePathname();
   const router = useRouter();
-
+  
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -33,7 +33,7 @@ export function NavMain({
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton 
-                  tooltip={item.title}
+                  tooltip={item.url}
                   isActive = {pathname === item.url}
                   onClick={() => router.push(item.url)}
                 >

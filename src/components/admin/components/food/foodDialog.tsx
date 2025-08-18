@@ -22,7 +22,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Food } from "@/types/food"
 import { Pencil, PlusCircle } from "lucide-react"
-import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -31,29 +30,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Category } from "@/types/category"
 import { useEffect } from "react"
 
-const formSchema = z.object({
-    name: z.string().min(2).max(50),
-    description: z.string().min(0).max(200),
-    price: z.string()
-        .min(1, "Il prezzo è obbligatorio")
-        .refine(val => {
-            const num = parseFloat(val);
-            return !isNaN(num) && num > 0;
-        }, {
-            message: "Il prezzo deve essere un numero maggiore di 0"
-        })
-        .refine(val => {
-            // Verifica che abbia massimo 2 decimali
-            return /^\d+(\.\d{1,2})?$/.test(val);
-        }, {
-            message: "Il prezzo può avere massimo 2 decimali"
-        }),
-    categoryId: z.number({
-        required_error: "Please select a category"
-    }).min(0, "Please select a category"),
-    available: z.boolean()
-})
-
+import {FoodFormValues, getFoodFormSchema } from "@/schemas/foodForm"
+import { useTranslations } from "next-intl"
 interface FoodDialogProp {
     food?: Food
     setFoods: React.Dispatch<React.SetStateAction<Food[]>>
@@ -63,12 +41,14 @@ interface FoodDialogProp {
 
 export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogProp) {
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const t = useTranslations('Food');
+
+    const form = useForm<FoodFormValues>({
+        resolver: zodResolver(getFoodFormSchema(t)),
         defaultValues: {
             name: food?.name || "",
             description: food?.description || "",
-            price: food?.price.toString() || "15.69",
+            price: food?.price.toString() || "",
             categoryId: food?.categoryId || (categories.length > 0 ? categories[0].id : undefined),
             available: food?.available ?? true
         }
@@ -103,7 +83,7 @@ export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogPr
         }
     }, [food, categories, form]);
 
-    function createFood(values: z.infer<typeof formSchema>) {
+    function createFood(values: FoodFormValues) {
         fetch("/api/foods", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -118,7 +98,7 @@ export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogPr
         })
     }
 
-    function updateFood(values: z.infer<typeof formSchema>) {
+    function updateFood(values: FoodFormValues) {
         fetch(`/api/foods/${food?.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -144,7 +124,7 @@ export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogPr
                         :
                         <Button className="w-min">
                             <PlusCircle />
-                            Create new Food
+                            {t('dialog.trigger')}
                         </Button>
                 }
             </DialogTrigger>
@@ -152,9 +132,8 @@ export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogPr
                 <DialogHeader>
                     <DialogTitle>
                         {
-                            food ? "Update " : "New "
+                            food ? t('dialog.updateTitle') : t('dialog.createTitle')
                         }
-                        Food
                     </DialogTitle>
                     <DialogDescription />
                 </DialogHeader>
@@ -170,13 +149,16 @@ export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogPr
 }
 
 interface FoodFormProps {
-    form: ReturnType<typeof useForm<z.infer<typeof formSchema>>>;
-    onSubmit: (values: z.infer<typeof formSchema>) => void;
+    form: ReturnType<typeof useForm<FoodFormValues>>;
+    onSubmit: (values: FoodFormValues) => void;
     food?: Food
     categories: Array<Category>
 }
 
 function FoodForm({ form, onSubmit, food, categories }: FoodFormProps) {
+
+    const t = useTranslations('Food');
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -185,12 +167,12 @@ function FoodForm({ form, onSubmit, food, categories }: FoodFormProps) {
                     name="name"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Food Name</FormLabel>
+                            <FormLabel>{t('formFields.name.title')}</FormLabel>
                             <FormControl>
-                                <Input placeholder="Pizza" {...field} />
+                                <Input placeholder={t('formFields.name.placeholder')} {...field} />
                             </FormControl>
                             <FormDescription>
-                                This is category display name.
+                                {t('formFields.name.description')}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -201,12 +183,12 @@ function FoodForm({ form, onSubmit, food, categories }: FoodFormProps) {
                     name="description"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Description</FormLabel>
+                            <FormLabel>{t('formFields.description.title')}</FormLabel>
                             <FormControl>
-                                <Input placeholder="The best italian food" {...field} />
+                                <Input placeholder={t('formFields.description.placeholder')} {...field} />
                             </FormControl>
                             <FormDescription>
-                                Food description.
+                                {t('formFields.description.description')}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -217,12 +199,12 @@ function FoodForm({ form, onSubmit, food, categories }: FoodFormProps) {
                     name="price"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Price €</FormLabel>
+                            <FormLabel>{t('formFields.price.title')}</FormLabel>
                             <FormControl>
-                                <Input placeholder="15.69" {...field} />
+                                <Input placeholder={t('formFields.price.placeholder')} {...field} />
                             </FormControl>
                             <FormDescription>
-                                Food price.
+                                {t('formFields.price.description')}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -233,14 +215,14 @@ function FoodForm({ form, onSubmit, food, categories }: FoodFormProps) {
                     name="categoryId"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Category</FormLabel>
+                            <FormLabel>{t('formFields.category.title')}</FormLabel>
                             <Select
                                 onValueChange={(value) => field.onChange(parseInt(value))}
                                 defaultValue={field.value.toString()}
                             >
                                 <FormControl>
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Select a category" />
+                                        <SelectValue placeholder={t('formFields.category.placeholder')} />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -262,7 +244,7 @@ function FoodForm({ form, onSubmit, food, categories }: FoodFormProps) {
                     name="available"
                     render={({ field }) => (
                         <FormItem className="flex flex-row items-center gap-2 space-y-0">
-                            <FormLabel>Available</FormLabel>
+                            <FormLabel>{t('formFields.available.title')}</FormLabel>
                             <FormControl>
                                 <Checkbox
                                     id="available"
@@ -272,7 +254,7 @@ function FoodForm({ form, onSubmit, food, categories }: FoodFormProps) {
                                 />
                             </FormControl>
                             <FormDescription>
-                                Show food as available.
+                                {t('formFields.available.description')}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -280,13 +262,13 @@ function FoodForm({ form, onSubmit, food, categories }: FoodFormProps) {
                 />
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button variant="outline">Cancel</Button>
+                        <Button variant="outline">{t('dialog.cancel')}</Button>
                     </DialogClose>
                     {
                         food ?
-                            <Button type="submit" className="bg-blue-500 hover:bg-blue-500/80 text-white">Edit</Button>
+                            <Button type="submit" className="bg-blue-500 hover:bg-blue-500/80 text-white">{t('dialog.edit')}</Button>
                             :
-                            <Button type="submit">Create</Button>
+                            <Button type="submit">{t('dialog.create')}</Button>
                     }
                 </DialogFooter>
             </form>

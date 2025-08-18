@@ -6,6 +6,7 @@ import { useRef, useState, forwardRef, useImperativeHandle } from "react"
 import Image from "next/image"
 import { Button } from "./button"
 import { Category } from "@/types/category"
+import { useTranslations } from "next-intl"
 
 interface UploadImageProps {
     initialPreview?: string
@@ -23,6 +24,7 @@ export const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(
     (
         { initialPreview = "", category, onChange }, ref
     ) => {
+        const t = useTranslations('Category.formFields.image')
         const fileInputRef = useRef<HTMLInputElement>(null)
         const [file, setFile] = useState<File | undefined>(undefined);
         const [preview, setPreview] = useState<string>(initialPreview);
@@ -127,11 +129,17 @@ export const UploadImage = forwardRef<UploadImageRef, UploadImageProps>(
                                 <div className="flex flex-col gap-0.5 items-center">
                                     <h3 className="text-sm font-semibold">
                                         {isDragOver 
-                                            ? 'Drop your image here!' 
-                                            : <>Drop your image here, or <span className="text-primary hover:underline transition-colors duration-200">browse</span></>
+                                            ? t('drop')
+                                            : <p>
+                                                {
+                                                    t.rich('placeholder',{
+                                                        highlight: (chunk) => <span className="text-primary hover:underline transition-colors duration-200">{chunk}</span>
+                                                    })
+                                                }
+                                            </p>
                                         }
                                     </h3>
-                                    <p className="text-gray-300 text-xs">Supports: JPG, JPEG, PNG</p>
+                                    <p className="text-gray-300 text-xs">{`${t('supports')}: JPG, JPEG, PNG`}</p>
                                 </div>
                             </div>
                         </div>
@@ -168,7 +176,7 @@ function DisplayImage({ fileName, size, preview, onRemove }: DisplayImageProp) {
                     {
                         size ?
                             <p className="text-xs text-gray-600">
-                                {(size / (1024 * 1000)).toFixed(2)} mb
+                                {`${(size / (1024 * 1000)).toFixed(2)} mb`}
                             </p>
                             :
                             <></>

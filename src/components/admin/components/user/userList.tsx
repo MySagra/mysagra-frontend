@@ -7,6 +7,7 @@ import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { UserDialog } from "./userDialog";
 import { DialogAction } from "@/components/ui/dialogAction";
+import { useTranslations } from "next-intl";
 
 interface UserListProp {
     initialUsers: Array<User>
@@ -46,6 +47,8 @@ interface UserCardProp {
 
 function UserCard({ user, thisUser, setUsers }: UserCardProp) {
 
+    const t = useTranslations('User.dialog');
+
     function deleteUser() {
         fetch(`/api/users/${user.id}`, {
             method: "DELETE",
@@ -71,18 +74,20 @@ function UserCard({ user, thisUser, setUsers }: UserCardProp) {
                 </p>
             </div>
             <DialogAction
-                title="Are you sure you want to delete this user?"
+                title={t('delete.title')}
                 variant={'destructive'}
                 action={() => deleteUser()}
-                buttonText="Delete"
+                buttonText={t('delete.buttonText')}
                 trigger={
                     <Button disabled={thisUser == user.username} variant={'destructive'} size={"icon"} className="size-7">
                         <Trash2 />
                     </Button>
                 }
             >
-                <p className="font-normal text-sm">
-                    This action <span className="font-bold">cannot be undone</span>
+                <p>
+                    {t.rich('delete.description', {
+                        strong: (chunk) => <span className="font-bold">{chunk}</span>
+                    })}
                 </p>
             </DialogAction>
         </div>

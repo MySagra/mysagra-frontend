@@ -7,6 +7,7 @@ import { Eye, EyeOff, Trash2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import CategoryDialog from "./categoryDialog";
 import { DialogAction } from "@/components/ui/dialogAction";
+import { useTranslations } from "next-intl";
 
 interface CategoriesPositionProps {
     initialCategories: Array<Category>
@@ -37,6 +38,7 @@ interface CategoryCardProps {
 
 function CategoryCard({ category, setCategories, imageURL }: CategoryCardProps) {
     const [show, setShow] = useState<boolean>(category.available);
+    const t = useTranslations('Category')
 
     function handleAvailable() {
         fetch(`/api/categories/available/${category.id}`, {
@@ -67,10 +69,10 @@ function CategoryCard({ category, setCategories, imageURL }: CategoryCardProps) 
             <div className="bg-secondary p-3 rounded-sm flex flex-row gap-3 place-content-between w-[400px] items-center">
                 <div className="flex flex-row gap-1 items-center">
                     <DialogAction
-                        title="Are you sure you want to delete this category?"
+                        title={t('delete.title')}
                         variant={'destructive'}
                         action={() => deleteCategory()}
-                        buttonText="Delete"
+                        buttonText={t('delete.buttonText')}
                         trigger={
                             <Button variant={'destructive'} size={"icon"} className="size-7">
                                 <Trash2 />
@@ -78,8 +80,9 @@ function CategoryCard({ category, setCategories, imageURL }: CategoryCardProps) 
                         }
                     >
                         <p className="font-normal text-sm">
-                            This action <span className="font-bold">cannot be undone</span>,
-                            if you delete the category you will lost all foods in this category!
+                            {t.rich('delete.description', {
+                                strong: (chunk) => <span className="font-bold">{chunk}</span>
+                            })}
                         </p>
                     </DialogAction>
                     <h1>

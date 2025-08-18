@@ -11,9 +11,11 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Food } from "@/types/food";
+import { useTranslations } from "next-intl";
 
 
 export default function FoodRowRecap({ food, quantity, smallView = false }: Props) {
+    const t = useTranslations("Utils");
     return (
         <TableRow>
             <TableCell 
@@ -30,7 +32,7 @@ export default function FoodRowRecap({ food, quantity, smallView = false }: Prop
                 smallView ? <></> : <TableCell></TableCell>
             }
             <TableCell className="text-right">{quantity}</TableCell>
-            <TableCell className="text-right">{Number(food.price * quantity).toFixed(2)}€</TableCell>
+            <TableCell className="text-right">{Number(food.price * quantity).toFixed(2)}{t("currency")}</TableCell>
         </TableRow>
     )
 }

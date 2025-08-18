@@ -11,26 +11,29 @@ import {
 import { Button } from "../ui/button"
 import { Order } from "@/types/order"
 import TableRecap from "./tableRecap"
+import { useTranslations } from "next-intl"
 
 interface DialogRecapProps {
     order: Order
 }
 
 export default function DialogRecap({ order }: DialogRecapProps) {
+    const t = useTranslations('Order');
+
     return (
         <Dialog>
             <DialogTrigger asChild>
                 <Button>
-                    View Order
+                    {t('trigger')}
                 </Button>
             </DialogTrigger>
             <DialogContent className=" h-[500px]">
                 <DialogHeader>
-                    <DialogTitle>Order for {order.customer}</DialogTitle>
+                    <DialogTitle>{t('orderFor')} {order.customer}</DialogTitle>
                     <DialogDescription asChild>
                         <div className="flex flex-row gap-3 place-content-between">
                             <nav>
-                                {new Date(order.dateTime).toLocaleString("en-US", {
+                                {new Date(order.dateTime).toLocaleString(t('time'), {
                                     day: "2-digit",
                                     month: "2-digit",
                                     year: "numeric",
@@ -39,10 +42,10 @@ export default function DialogRecap({ order }: DialogRecapProps) {
                                 })}
                             </nav>
                             <nav>
-                                Table: {order.table}
+                                {`${t('table')}: ${order.table}`}
                             </nav>
                             <nav>
-                                ID: <span className="font-mono">{order.id}</span>
+                                {"ID: "} <span className="font-mono">{order.id}</span>
                             </nav>
                         </div>
                     </DialogDescription>

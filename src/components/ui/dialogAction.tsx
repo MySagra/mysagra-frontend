@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog"
 
 import { VariantProps } from "class-variance-authority";
+import { useTranslations } from "next-intl";
 
 interface DialogActionProps {
     children?: React.ReactNode
@@ -22,6 +23,9 @@ interface DialogActionProps {
 }
 
 export function DialogAction({ children, trigger, title, buttonText, variant, action }: DialogActionProps) {
+
+    const t = useTranslations('Utils')
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -38,7 +42,7 @@ export function DialogAction({ children, trigger, title, buttonText, variant, ac
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button variant={"outline"}>
-                            Cancel
+                            {t('cancel')}
                         </Button>
                     </DialogClose>
                     <DialogClose asChild>

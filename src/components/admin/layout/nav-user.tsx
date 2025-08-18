@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useRouter } from "next/navigation"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useTranslations } from "next-intl"
 
 export function NavUser({
     user,
@@ -27,6 +28,7 @@ export function NavUser({
 }) {
     const router = useRouter();
     const { isMobile } = useSidebar();
+    const t = useTranslations('Utils');
 
     function logOut() {
         fetch("/api/auth/logout", {
@@ -53,7 +55,7 @@ export function NavUser({
                                 <AvatarFallback className="rounded-lg">{user.username.substring(0, 2).toUpperCase()}</AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-medium">@{user.username}</span>
+                                <span className="truncate font-medium">{`@${user.username}`}</span>
                                 <span className="truncate text-xs">{user.role}</span>
                             </div>
                             <ChevronsUpDown className="ml-auto size-4" />
@@ -72,7 +74,7 @@ export function NavUser({
                                     <AvatarFallback className="rounded-lg">{user.username.substring(0, 2).toUpperCase()}</AvatarFallback>
                                 </Avatar>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
-                                    <span className="truncate font-medium">@{user.username}</span>
+                                    <span className="truncate font-medium">{`@${user.username}`}</span>
                                     <span className="truncate text-xs">{user.role}</span>
                                 </div>
                             </div>
@@ -80,7 +82,7 @@ export function NavUser({
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => logOut()}>
                             <LogOut />
-                            Log out
+                            {t('logout')}
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

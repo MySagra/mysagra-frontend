@@ -26,39 +26,14 @@ import {
 } from "@/components/ui/form"
 
 import { Input } from "@/components/ui/input"
-
-import { z } from "zod"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Category } from "@/types/category";
 import { useRef } from "react";
 
-const formSchema = z.object({
-    name: z.string().min(2).max(50),
-    position: z.string()
-        .min(1, "Position is required")
-        .refine(val => !isNaN(Number(val)), {
-            message: "Required a number"
-        }),
-    available: z.boolean(),
-    image: z
-        .instanceof(File)
-        .optional()
-        .refine((file) => {
-            if (!file) return true;
-            console.log("Validating file size:", file.size, "bytes");
-            return file.size <= 5 * 1024 * 1024; // Max 5MB
-        }, "File must be less than 5MB")
-        .refine((file) => {
-            if (!file) return true;
-            return file.size <= 5 * 1024 * 1024; // Max 5MB
-        }, "File must be less than 5MB")
-        .refine((file) => {
-            if (!file) return true;
-            return ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type);
-        }, "Only JPG, JPEG and PNG files are allowed"),
-})
+import { CategoryFormValues, getCategoryFormSchema } from "@/schemas/categoryForm";
+import { useTranslations } from "next-intl";
 
 interface CategoryDialog {
     category?: Category
@@ -69,9 +44,10 @@ interface CategoryDialog {
 
 export default function CategoryDialog({ category, setCategories, setShow, imageURL }: CategoryDialog) {
     const uploadRef = useRef<UploadImageRef>(null);
+    const t = useTranslations('Category');
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<CategoryFormValues>({
+        resolver: zodResolver(getCategoryFormSchema(t)),
         defaultValues: {
             name: category?.name || "",
             position: category?.position !== undefined ? String(category.position) : "1",
@@ -79,7 +55,7 @@ export default function CategoryDialog({ category, setCategories, setShow, image
         }
     })
 
-    function createCategory(values: z.infer<typeof formSchema>) {
+    function createCategory(values: CategoryFormValues) {
         const file = uploadRef.current?.getFile();
         const categoryData = { ...values };
 
@@ -106,7 +82,7 @@ export default function CategoryDialog({ category, setCategories, setShow, image
         })
     }
 
-    function updateCategory(values: z.infer<typeof formSchema>) {
+    function updateCategory(values: CategoryFormValues) {
         const file = uploadRef.current?.getFile();
         const categoryData = { ...values };
 
@@ -157,7 +133,7 @@ export default function CategoryDialog({ category, setCategories, setShow, image
                         :
                         <Button className="w-min">
                             <PlusCircle />
-                            Create new category
+                            {t('dialog.trigger')}
                         </Button>
                 }
             </DialogTrigger>
@@ -165,9 +141,8 @@ export default function CategoryDialog({ category, setCategories, setShow, image
                 <DialogHeader>
                     <DialogTitle>
                         {
-                            category ? "Update " : "New "
+                            category ? t('dialog.updateTitle') : t('dialog.createTitle')
                         }
-                        Category
                     </DialogTitle>
                     <DialogDescription />
                 </DialogHeader>
@@ -186,14 +161,15 @@ export default function CategoryDialog({ category, setCategories, setShow, image
 }
 
 interface CategoryFormProps {
-    form: ReturnType<typeof useForm<z.infer<typeof formSchema>>>;
+    form: ReturnType<typeof useForm<CategoryFormValues>>;
     uploadRef: React.RefObject<UploadImageRef | null>;
-    onSubmit: (values: z.infer<typeof formSchema>) => void;
+    onSubmit: (values: CategoryFormValues) => void;
     category?: Category,
     imageURL?: string
 }
 
 function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: CategoryFormProps) {
+    const t = useTranslations('Category');
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -202,12 +178,12 @@ function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: Categor
                     name="name"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Category Name</FormLabel>
+                            <FormLabel>{t('formFields.name.title')}</FormLabel>
                             <FormControl>
-                                <Input placeholder="Restaurant" {...field} />
+                                <Input placeholder={t('formFields.name.placeholder')} {...field} />
                             </FormControl>
                             <FormDescription>
-                                This is category display name.
+                                {t('formFields.name.description')}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -218,12 +194,12 @@ function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: Categor
                     name="position"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Position</FormLabel>
+                            <FormLabel>{t('formFields.position.title')}</FormLabel>
                             <FormControl>
                                 <Input placeholder="1" {...field} />
                             </FormControl>
                             <FormDescription>
-                                Category display order.
+                                {t('formFields.position.description')}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -234,7 +210,7 @@ function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: Categor
                     name="image"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Category Image</FormLabel>
+                            <FormLabel>{t('formFields.image.title')}</FormLabel>
                             <FormControl>
                                 <UploadImage
                                     ref={uploadRef}
@@ -247,7 +223,7 @@ function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: Categor
                                 />
                             </FormControl>
                             <FormDescription>
-                                Upload an image for this category (optional, max 5MB). Only JPEG and PNG files are supported.
+                                {t('formFields.image.description')}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -258,7 +234,7 @@ function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: Categor
                     name="available"
                     render={({ field }) => (
                         <FormItem className="flex flex-row items-center gap-2 space-y-0">
-                            <FormLabel>Available</FormLabel>
+                            <FormLabel>{t('formFields.available.title')}</FormLabel>
                             <FormControl>
                                 <Checkbox
                                     id="available"
@@ -268,7 +244,7 @@ function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: Categor
                                 />
                             </FormControl>
                             <FormDescription>
-                                Show category as available.
+                                {t('formFields.available.description')}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -276,13 +252,13 @@ function CategoryForm({ form, onSubmit, category, imageURL, uploadRef }: Categor
                 />
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button variant="outline">Cancel</Button>
+                        <Button variant="outline">{t('dialog.cancel')}</Button>
                     </DialogClose>
                     {
                         category ?
-                            <Button type="submit" className="bg-blue-500 hover:bg-blue-500/80 text-white">Edit</Button>
+                            <Button type="submit" className="bg-blue-500 hover:bg-blue-500/80 text-white">{t('dialog.edit')}</Button>
                             :
-                            <Button type="submit">Create</Button>
+                            <Button type="submit">{t('dialog.create')}</Button>
                     }
                 </DialogFooter>
             </form>

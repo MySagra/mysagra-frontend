@@ -15,48 +15,52 @@ import { Gauge, Pizza, Receipt, Martini, Users, ArrowLeftRight } from "lucide-re
 import Logo from "@/components/logo"
 import { NavUser } from "./nav-user"
 import { useEffect, useState } from "react"
-
-const data = {
-    navMain: [
-        {
-            title: "Dashboard",
-            url: "/admin/dashboard",
-            icon: Gauge,
-        },
-        {
-            title: "Manage Users",
-            url: "/admin/users",
-            icon: Users,
-        },
-        {
-            title: "Categories",
-            url: "/admin/categories",
-            icon: Martini,
-        },
-        {
-            title: "Foods",
-            url: "/admin/food",
-            icon: Pizza,
-        },
-        {
-            title: "Orders",
-            url: "/admin/orders/1",
-            icon: Receipt,
-        },
-        {
-            title: "Operator View",
-            url: "/operator/dashboard",
-            icon: ArrowLeftRight,
-        }
-    ]
-}
+import { useTranslations } from "next-intl"
 
 export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    const [user, setUser] = useState({ username: "", role: ""});
+
+    const t = useTranslations('Utils');
+
+    const data = {
+        navMain: [
+            {
+                title: t('dashboard'),
+                url: "/admin/dashboard",
+                icon: Gauge,
+            },
+            {
+                title: t('users'),
+                url: "/admin/users",
+                icon: Users,
+            },
+            {
+                title: t('categories'),
+                url: "/admin/categories",
+                icon: Martini,
+            },
+            {
+                title: t('foods'),
+                url: "/admin/food",
+                icon: Pizza,
+            },
+            {
+                title: t('orders'),
+                url: "/admin/orders/1",
+                icon: Receipt,
+            },
+            {
+                title: t('operatorView'),
+                url: "/operator/dashboard",
+                icon: ArrowLeftRight,
+            }
+        ]
+    }
+
+    const [user, setUser] = useState({ username: "", role: "" });
 
     useEffect(() => {
         const userStr = localStorage.getItem("user");
-        if(!userStr) return;
+        if (!userStr) return;
         setUser(JSON.parse(userStr));
     }, [])
 

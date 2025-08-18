@@ -18,8 +18,10 @@ interface Prop {
 import { useOrder } from "@/contexts/OrderContext";
 import { useEffect, useState } from "react"
 import { Food } from "@/types/food"
+import { useTranslations } from "next-intl"
 
 export default function FoodCard({ food }: Prop) {
+    const t = useTranslations('Utils');
     const { order, setOrder } = useOrder();
     const [count, setCount] = useState<number>(0);
 
@@ -108,8 +110,8 @@ export default function FoodCard({ food }: Prop) {
                 <div className="flex flex-row place-content-between w-full items-center">
                     <p className="text-2xl font-semibold text-yellow-700">
                         {
-                            Number(food.price).toFixed(2)
-                        }€
+                            Number(food.price).toFixed(2) + t('currency')
+                        }
                     </p>
                     <div className="flex flex-row gap-1.5 items-center">
                         <Button variant={"secondary"} size={"icon"} className=" rounded-full" onClick={() => removeFood()}>

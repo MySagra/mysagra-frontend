@@ -7,6 +7,7 @@ import { useState } from "react";
 import { FoodDialog } from "./foodDialog";
 import { Category } from "@/types/category";
 import { DialogAction } from "@/components/ui/dialogAction";
+import { useTranslations } from "next-intl";
 
 interface FoodListProps {
     initialFoods: Array<Food>
@@ -37,6 +38,7 @@ interface FoodCardProps {
 }
 
 function FoodCard({ food, setFoods, categories }: FoodCardProps) {
+    const t = useTranslations('Food.delete')
     const [show, setShow] = useState<boolean>(food.available || false)
 
     function deleteFood() {
@@ -67,7 +69,7 @@ function FoodCard({ food, setFoods, categories }: FoodCardProps) {
         <div className="bg-secondary p-3 rounded-md flex place-content-between">
             <div className="flex flex-row gap-1.5 items-center">
                 <DialogAction
-                    title="Are you sure you want to delete this food?"
+                    title={t('title')}
                     variant={'destructive'}
                     action={() => deleteFood()}
                     buttonText="Delete"
@@ -78,7 +80,9 @@ function FoodCard({ food, setFoods, categories }: FoodCardProps) {
                     }
                 >
                     <p className="font-normal text-sm">
-                        This action <span className="font-bold">cannot be undone</span>
+                        {t.rich('description', {
+                            strong: (chunk) => <span className="font-bold">{chunk}</span>
+                        })}
                     </p>
                 </DialogAction>
                 {food.name}

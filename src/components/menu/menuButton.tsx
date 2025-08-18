@@ -1,5 +1,6 @@
-'use client' // Cambia da 'use server' a 'use client'
+'use client'
 
+import { useTranslations } from "next-intl";
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react";
@@ -11,6 +12,7 @@ interface MenuButtonProps {
 }
 
 export default function MenuButton({ title, src, href }: MenuButtonProps) {
+    const t = useTranslations('Utils');
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
 
@@ -37,8 +39,8 @@ export default function MenuButton({ title, src, href }: MenuButtonProps) {
                         //fallback
                         <div className="w-full h-full bg-gray-300 flex items-center justify-center">
                             <div className="text-gray-500 text-center">
-                                <div className="text-4xl mb-2">📷</div>
-                                <div className="text-sm">No Image</div>
+                                <div className="text-4xl mb-2">{"📷"}</div>
+                                <div className="text-sm">{t('noImage')}</div>
                             </div>
                         </div>
                     )}

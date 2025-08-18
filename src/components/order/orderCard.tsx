@@ -15,6 +15,7 @@ import DialogRecap from "../recap/dialogRecap"
 import { Button } from "../ui/button"
 import { Trash2 } from "lucide-react"
 import { DialogAction } from "../ui/dialogAction"
+import { useTranslations } from "next-intl"
 
 interface OrderCardProps {
     order: Order
@@ -24,6 +25,7 @@ interface OrderCardProps {
 }
 
 export default function OrderCard({ order, value = "", adminView = false, setOrders }: OrderCardProps) {
+    const t = useTranslations('Order');
 
     function deleteOrder() {
         if (!setOrders) return;
@@ -54,7 +56,7 @@ export default function OrderCard({ order, value = "", adminView = false, setOrd
                         adminView
                             ?
                             <DialogAction
-                                title="Are you sure you want to delete this order?"
+                                title={t('delete.title')}
                                 variant={'destructive'}
                                 action={() => deleteOrder()}
                                 buttonText="Delete"
@@ -65,8 +67,9 @@ export default function OrderCard({ order, value = "", adminView = false, setOrd
                                 }
                             >
                                 <p className="font-normal text-sm">
-                                    This action <span className="font-bold">cannot be undone</span>,
-                                    if you delete the order the stats will change.
+                                    {t.rich('delete.description', {
+                                        strong: (chunk) => <span className="font-bold">{chunk}</span>,
+                                    })}
                                 </p>
                             </DialogAction>
                             :
@@ -86,7 +89,7 @@ export default function OrderCard({ order, value = "", adminView = false, setOrd
             </CardHeader>
             <CardContent>
                 <p className="flex flex-row gap-1 items-center">
-                    Order ID:
+                    {"ID:"}
                     {
                         order.id.toLowerCase() === value.toLowerCase()
                             ?
@@ -96,7 +99,7 @@ export default function OrderCard({ order, value = "", adminView = false, setOrd
                     }
                 </p>
                 <p className="flex flex-row gap-1 items-center">
-                    Table:
+                    {t('table')}
                     {
                         value && order.table.includes(value)
                             ?

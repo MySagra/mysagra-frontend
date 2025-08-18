@@ -19,18 +19,14 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"
-import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Role, User } from "@/types/user"
+import { useTranslations } from "next-intl"
 
-const formSchema = z.object({
-    username: z.string().min(4).max(50),
-    password: z.string().min(8),
-    roleId: z.number()
-})
+import { UserFormValues, getUserFormSchema } from "@/schemas/userForm"
 
 interface UserDialogProp {
     setUsers: React.Dispatch<React.SetStateAction<User[]>>
@@ -38,8 +34,10 @@ interface UserDialogProp {
 }
 
 export function UserDialog({ setUsers, roles }: UserDialogProp) {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const t = useTranslations('User')
+
+    const form = useForm<UserFormValues>({
+        resolver: zodResolver(getUserFormSchema(t)),
         defaultValues: {
             username: "",
             password: "",
@@ -47,7 +45,7 @@ export function UserDialog({ setUsers, roles }: UserDialogProp) {
         }
     })
 
-    function createUser(values: z.infer<typeof formSchema>) {
+    function createUser(values: UserFormValues) {
         fetch("/api/users", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -68,14 +66,14 @@ export function UserDialog({ setUsers, roles }: UserDialogProp) {
                 {
                     <Button className="w-min">
                         <PlusCircle />
-                        Create new User
+                        {t('dialog.trigger')}
                     </Button>
                 }
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        New User
+                        {t('dialog.title')}
                     </DialogTitle>
                     <DialogDescription />
                 </DialogHeader>
@@ -90,12 +88,13 @@ export function UserDialog({ setUsers, roles }: UserDialogProp) {
 }
 
 interface UserFormProps {
-    form: ReturnType<typeof useForm<z.infer<typeof formSchema>>>;
-    onSubmit: (values: z.infer<typeof formSchema>) => void;
+    form: ReturnType<typeof useForm<UserFormValues>>;
+    onSubmit: (values: UserFormValues) => void;
     roles: Array<Role>
 }
 
 function UserForm({ form, onSubmit, roles }: UserFormProps) {
+    const t = useTranslations('User')
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -104,12 +103,12 @@ function UserForm({ form, onSubmit, roles }: UserFormProps) {
                     name="username"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>{t('formFields.username')}</FormLabel>
                             <FormControl>
-                                <Input placeholder="Mario" {...field} />
+                                <Input placeholder={t('dialog.username.placeholder')} {...field} />
                             </FormControl>
                             <FormDescription>
-                                This is user display name.
+                                {t('dialog.username.description')}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -120,9 +119,9 @@ function UserForm({ form, onSubmit, roles }: UserFormProps) {
                     name="password"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel>{t('formFields.password')}</FormLabel>
                             <FormControl>
-                                <Input type="password" placeholder="Create a password" {...field} />
+                                <Input type="password" placeholder={t('dialog.password.placeholder')} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -133,14 +132,14 @@ function UserForm({ form, onSubmit, roles }: UserFormProps) {
                     name="roleId"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Role</FormLabel>
+                            <FormLabel>{t('formFields.role')}</FormLabel>
                             <Select
                                 onValueChange={(value) => field.onChange(parseInt(value))}
                                 defaultValue={field.value.toString()}
                             >
                                 <FormControl>
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Select a category" />
+                                        <SelectValue />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -159,9 +158,9 @@ function UserForm({ form, onSubmit, roles }: UserFormProps) {
                 />
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button variant="outline">Cancel</Button>
+                        <Button variant="outline">{t('dialog.cancel')}</Button>
                     </DialogClose>
-                    <Button type="submit">Create</Button>
+                    <Button type="submit">{t('dialog.create')}</Button>
                 </DialogFooter>
             </form>
         </Form>

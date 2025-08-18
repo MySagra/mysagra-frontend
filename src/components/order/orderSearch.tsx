@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Loader2Icon, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface OrderSearchProp {
     setOrders: React.Dispatch<React.SetStateAction<Order[]>>;
@@ -18,6 +19,7 @@ interface OrderSearchProp {
 }
 
 export default function OrderSearch({ setOrders, className, checkAll = false, text, setText }: OrderSearchProp) {
+    const t = useTranslations('Operator.Dashboard');
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null); //remove focus from keyboard
 
@@ -39,9 +41,9 @@ export default function OrderSearch({ setOrders, className, checkAll = false, te
                 }
                 if (res.status == 404) {
                     toast(
-                        <p>No results found for <span className="font-bold">&quot;{text}&quot;</span></p>,
+                        <p>{t('searchError.title')}<span className="font-bold">{`&quot;${text}&quot;`}</span></p>,
                         {
-                            description: "Try searching with different keywords"
+                            description: t('searchError.description')
                         }
                     );
                 }
@@ -69,7 +71,7 @@ export default function OrderSearch({ setOrders, className, checkAll = false, te
                 inputMode="search"
                 enterKeyHint="search"
                 className="hide-search-clear"
-                placeholder="Cerca Ordine"
+                placeholder={t('search')}
                 value={text}
                 onChange={e => {
                     setOrders([]);

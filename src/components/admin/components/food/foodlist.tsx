@@ -72,7 +72,7 @@ function FoodCard({ food, setFoods, categories }: FoodCardProps) {
                     title={t('title')}
                     variant={'destructive'}
                     action={() => deleteFood()}
-                    buttonText="Delete"
+                    buttonText={t('buttonText')}
                     trigger={
                         <Button variant={'destructive'} size={"icon"} className="size-7">
                             <Trash2 />

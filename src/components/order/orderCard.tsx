@@ -59,7 +59,7 @@ export default function OrderCard({ order, value = "", adminView = false, setOrd
                                 title={t('delete.title')}
                                 variant={'destructive'}
                                 action={() => deleteOrder()}
-                                buttonText="Delete"
+                                buttonText={t('delete.buttonText')}
                                 trigger={
                                     <Button variant={'destructive'} size={"icon"} className="size-7">
                                         <Trash2 />

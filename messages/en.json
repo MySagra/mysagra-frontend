@@ -58,7 +58,8 @@
     "orderFor": "Order for",
     "delete": {
       "title": "Are you sure you want to delete this order?",
-      "description": "This action <strong>cannot be undone</strong>, if you delete the order the stats will change."
+      "description": "This action <strong>cannot be undone</strong>, if you delete the order the stats will change.",
+      "buttonText": "Delete Order"
     },
     "ordersManagement": "Orders Management"
   },

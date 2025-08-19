@@ -58,7 +58,8 @@
     "orderFor": "Ordine di",
     "delete": {
       "title": "Sei sicuro di voler eliminare questo ordine?",
-      "description": "Questa azione <strong>non può essere annullata</strong>, se elimini l'ordine le statistiche cambieranno."
+      "description": "Questa azione <strong>non può essere annullata</strong>, se elimini l'ordine le statistiche cambieranno.",
+      "buttonText": "Elimina Ordine"
     },
     "ordersManagement": "Gestione Ordini"
   },

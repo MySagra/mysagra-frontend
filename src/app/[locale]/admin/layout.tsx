@@ -1,40 +1,12 @@
-'use client'
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
 import {
     SidebarInset,
     SidebarProvider,
 } from "@/components/ui/sidebar"
 
-interface User {
-    username: string,
-    role: string
-}
-
-import { AdminSidebar } from "@/components/admin/layout/admin-sidebar";
+import { AdminSidebar } from "./_components/layout/admin-sidebar";
+import { Toaster } from "@/components/ui/sonner"
 
 export default function OperatorLayout({ children }: { children: React.ReactNode }) {
-    const router = useRouter();
-
-    useEffect(() => {
-        let user: User | null = null;
-        if (typeof window !== "undefined") {
-            const userStr = localStorage.getItem("user");
-            if (userStr) {
-                try {
-                    user = JSON.parse(userStr) as User;
-                } catch {
-                    user = null;
-                }
-            }
-        }
-        if (!user || user.role != "admin") {
-            router.replace("/auth/login");
-        }
-    }, [router]);
-
     return (
         <SidebarProvider
             style={
@@ -46,7 +18,10 @@ export default function OperatorLayout({ children }: { children: React.ReactNode
         >
             <AdminSidebar variant="inset" />
             <SidebarInset>
-                {children}
+                <main>  
+                    {children}
+                </main>
+                <Toaster position="top-center" richColors theme="light" />
             </SidebarInset>
         </SidebarProvider>
     )

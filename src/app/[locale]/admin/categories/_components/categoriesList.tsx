@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import CategoryDialog from "./categoryDialog";
 import { DialogAction } from "@/components/ui/dialogAction";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 interface CategoriesPositionProps {
     initialCategories: Array<Category>
@@ -61,8 +62,15 @@ function CategoryCard({ category, setCategories, imageURL }: CategoryCardProps) 
             if (res.ok) {
                 setCategories(prev => prev.filter(c => c.id !== category.id));
             }
-        })
+        }).then(() => {
+            toast.success(t('toast.deleteSuccess'));
+        }).catch(err => {
+            toast.error(t('toast.deleteError'));
+            console.error(err);
+        });
     }
+
+        
 
     return (
         <div className="w-full flex place-content-center">

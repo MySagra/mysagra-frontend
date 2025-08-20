@@ -13,7 +13,7 @@ export async function GET(
     { params }: { params: Promise<Params> }
 ) {
     const { id } = await params;
-    const res = await fetch(`${API_URL}/foods/${id}`, { next: { tags: ['foods'] }});
+    const res = await fetch(`${API_URL}/v1/foods/${id}`, { next: { tags: ['foods'] }});
     const data = await res.json();
     return NextResponse.json(data);
 }
@@ -28,7 +28,7 @@ export async function PUT(
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value || "redondi";
 
-    const res = await fetch(`${API_URL}/foods/${id}`, {
+    const res = await fetch(`${API_URL}/v1/foods/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",

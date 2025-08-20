@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
-import { UserList } from "@/components/admin/components/user/userList";
-import { AdminHeader } from "@/components/admin/layout/header"
+import { UserList } from "./_components/userList";
+import { AdminHeader } from "../_components/layout/header"
 import { getRoles } from "@/services/roles.service";
 import { getUsers } from "@/services/users.service";
 import { getTranslations } from "next-intl/server";

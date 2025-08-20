@@ -1,4 +1,4 @@
-import { AdminHeader } from "@/components/admin/layout/header"
+import { AdminHeader } from "../../_components/layout/header"
 import { getOrders } from "@/services/orders.service";
 import OrderList from "../_components/orderList";
 import { getTranslations } from "next-intl/server";

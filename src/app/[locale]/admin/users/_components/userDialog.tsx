@@ -27,6 +27,7 @@ import { Role, User } from "@/types/user"
 import { useTranslations } from "next-intl"
 
 import { UserFormValues, getUserFormSchema } from "@/schemas/userForm"
+import { toast } from "sonner"
 
 interface UserDialogProp {
     setUsers: React.Dispatch<React.SetStateAction<User[]>>
@@ -57,6 +58,11 @@ export function UserDialog({ setUsers, roles }: UserDialogProp) {
             setUsers(prev =>
                 [...prev, data]
             );
+        }).then(() => {
+            toast.success(t('toast.createSuccess'));
+        }).catch(err => {
+            toast.error(t('toast.createError'));
+            console.error(err);
         })
     }
 

@@ -34,6 +34,7 @@ import { useRef } from "react";
 
 import { CategoryFormValues, getCategoryFormSchema } from "@/schemas/categoryForm";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 interface CategoryDialog {
     category?: Category
@@ -79,6 +80,8 @@ export default function CategoryDialog({ category, setCategories, setShow, image
             setCategories(prev =>
                 [...prev, data].sort((a, b) => Number(a.position) - Number(b.position))
             );
+        }).then(() => {
+            toast.success("Category created succesfully");
         })
     }
 
@@ -108,6 +111,11 @@ export default function CategoryDialog({ category, setCategories, setShow, image
                     .map(c => c.id === data.id ? { ...c, ...data } : c)
                     .sort((a, b) => Number(a.position) - Number(b.position))
             );
+        }).then(() => {
+            toast.info(t('toast.updateSuccess'));
+        }).catch(err => {
+            toast.error(t('toast.updateError'));
+            console.error(err);
         })
     }
 

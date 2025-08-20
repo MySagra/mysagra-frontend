@@ -16,6 +16,7 @@ import { Button } from "../ui/button"
 import { Trash2 } from "lucide-react"
 import { DialogAction } from "../ui/dialogAction"
 import { useTranslations } from "next-intl"
+import { toast } from "sonner"
 
 interface OrderCardProps {
     order: Order
@@ -38,6 +39,11 @@ export default function OrderCard({ order, value = "", adminView = false, setOrd
             if (res.ok) {
                 setOrders(prev => prev.filter(o => o.id !== order.id));
             }
+        }).then(() => {
+            toast.success(t('toast.deleteSuccess'));
+        }).catch(err => {
+            toast.error(t('toast.deleteError'));
+            console.error(err);
         })
     }
 

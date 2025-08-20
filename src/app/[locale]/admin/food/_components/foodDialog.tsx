@@ -32,6 +32,7 @@ import { useEffect } from "react"
 
 import {FoodFormValues, getFoodFormSchema } from "@/schemas/foodForm"
 import { useTranslations } from "next-intl"
+import { toast } from "sonner"
 interface FoodDialogProp {
     food?: Food
     setFoods: React.Dispatch<React.SetStateAction<Food[]>>
@@ -95,6 +96,11 @@ export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogPr
             setFoods(prev =>
                 [...prev, data]
             );
+        }).then(() => {
+            toast.success(t('toast.createSuccess'));
+        }).catch(err => {
+            toast.error(t('toast.createError'));
+            console.error(err);
         })
     }
 
@@ -110,6 +116,11 @@ export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogPr
             setFoods(prev =>
                 prev.map(f => f.id === data.id ? { ...f, ...data } : f)
             );
+        }).then(() => {
+            toast.info(t('toast.updateSuccess'));
+        }).catch(err => {
+            toast.error(t('toast.updateError'));
+            console.error(err);
         })
     }
 

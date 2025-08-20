@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
-import { FoodList } from "@/components/admin/components/food/foodlist";
-import { AdminHeader } from "@/components/admin/layout/header"
+import { FoodList } from "./_components/foodlist";
+import { AdminHeader } from "../_components/layout/header"
 import { getCategories } from "@/services/categories.service";
 import { getFoods } from "@/services/foods.service";
 import { getTranslations } from "next-intl/server";

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { UserDialog } from "./userDialog";
 import { DialogAction } from "@/components/ui/dialogAction";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 interface UserListProp {
     initialUsers: Array<User>
@@ -46,8 +47,7 @@ interface UserCardProp {
 }
 
 function UserCard({ user, thisUser, setUsers }: UserCardProp) {
-
-    const t = useTranslations('User.dialog');
+    const t = useTranslations('User');
 
     function deleteUser() {
         fetch(`/api/users/${user.id}`, {
@@ -58,6 +58,11 @@ function UserCard({ user, thisUser, setUsers }: UserCardProp) {
             if (res.ok) {
                 setUsers(prev => prev.filter(u => u.id !== user.id));
             }
+        }).then(() => {
+            toast.success(t('toast.deleteSuccess'));
+        }).catch(err => {
+            toast.error(t('toast.deleteError'));
+            console.error(err);
         })
     }
 

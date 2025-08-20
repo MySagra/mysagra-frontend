@@ -8,6 +8,7 @@ import { FoodDialog } from "./foodDialog";
 import { Category } from "@/types/category";
 import { DialogAction } from "@/components/ui/dialogAction";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 interface FoodListProps {
     initialFoods: Array<Food>
@@ -38,7 +39,7 @@ interface FoodCardProps {
 }
 
 function FoodCard({ food, setFoods, categories }: FoodCardProps) {
-    const t = useTranslations('Food.delete')
+    const t = useTranslations('Food')
     const [show, setShow] = useState<boolean>(food.available || false)
 
     function deleteFood() {
@@ -50,6 +51,11 @@ function FoodCard({ food, setFoods, categories }: FoodCardProps) {
             if (res.ok) {
                 setFoods(prev => prev.filter(f => f.id !== food.id));
             }
+        }).then(() => {
+            toast.success(t('toast.deleteSuccess'));
+        }).catch(err => {
+            toast.error(t('toast.deleteError'));
+            console.error(err);
         })
     }
 
@@ -69,10 +75,10 @@ function FoodCard({ food, setFoods, categories }: FoodCardProps) {
         <div className="bg-secondary p-3 rounded-md flex place-content-between">
             <div className="flex flex-row gap-1.5 items-center">
                 <DialogAction
-                    title={t('title')}
+                    title={t('delete.title')}
                     variant={'destructive'}
                     action={() => deleteFood()}
-                    buttonText={t('buttonText')}
+                    buttonText={t('delete.buttonText')}
                     trigger={
                         <Button variant={'destructive'} size={"icon"} className="size-7">
                             <Trash2 />
@@ -80,7 +86,7 @@ function FoodCard({ food, setFoods, categories }: FoodCardProps) {
                     }
                 >
                     <p className="font-normal text-sm">
-                        {t.rich('description', {
+                        {t.rich('delete.description', {
                             strong: (chunk) => <span className="font-bold">{chunk}</span>
                         })}
                     </p>

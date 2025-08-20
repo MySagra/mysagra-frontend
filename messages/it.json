@@ -61,7 +61,11 @@
       "description": "Questa azione <strong>non può essere annullata</strong>, se elimini l'ordine le statistiche cambieranno.",
       "buttonText": "Elimina Ordine"
     },
-    "ordersManagement": "Gestione Ordini"
+    "ordersManagement": "Gestione Ordini",
+    "toast": {
+      "deleteSuccess": "Ordine eliminato con successo",
+      "deleteError": "Errore nell'eliminazione dell'ordine"
+    }
   },
   "Admin": {
     "Login": {
@@ -107,11 +111,6 @@
       },
       "password": {
         "placeholder": "Crea una password"
-      },
-      "delete": {
-        "title": "Sei sicuro di voler eliminare questo utente?",
-        "description": "Questa azione <strong>non può essere annullata</strong>, se elimini l'utente i suoi dati andranno persi.",
-        "buttonText": "Elimina Utente"
       }
     },
     "formFields": {
@@ -125,6 +124,19 @@
       "usernameLength": "Il nome utente deve essere lungo almeno 4 caratteri",
       "passwordLength": "La password deve essere lunga almeno 8 caratteri",
       "role": "Il ruolo è obbligatorio"
+    },
+    "toast": {
+      "createSuccess": "Utente creato con successo",
+      "createError": "Errore nella creazione dell'utente",
+      "updateSuccess": "Utente aggiornato con successo",
+      "updateError": "Errore nell'aggiornamento dell'utente",
+      "deleteSuccess": "Utente eliminato con successo",
+      "deleteError": "Errore nell'eliminazione dell'utente"
+    },
+    "delete": {
+      "title": "Sei sicuro di voler eliminare questo utente?",
+      "description": "Questa azione <strong>non può essere annullata</strong>, se elimini l'utente i suoi dati andranno persi.",
+      "buttonText": "Elimina Utente"
     }
   },
   "Analytics": {
@@ -184,6 +196,14 @@
       "title": "Sei sicuro di voler eliminare questa categoria?",
       "description": "Questa azione <strong>non può essere annullata</strong>, se elimini la categoria perderai tutti i cibi in questa categoria!",
       "buttonText": "Elimina Categoria"
+    },
+    "toast": {
+      "createSuccess": "Categoria creata con successo",
+      "createError": "Errore nella creazione della categoria",
+      "updateSuccess": "Categoria aggiornata con successo",
+      "updateError": "Errore nell'aggiornamento della categoria",
+      "deleteSuccess": "Categoria eliminata con successo",
+      "deleteError": "Errore nell'eliminazione della categoria"
     }
   },
   "Food": {
@@ -237,6 +257,14 @@
       "title": "Sei sicuro di voler eliminare questo alimento?",
       "description": "Questa azione <strong>non può essere annullata</strong>, se elimini l'alimento perderai tutti i dati relativi a questo alimento!",
       "buttonText": "Elimina Alimento"
+    },
+    "toast": {
+      "createSuccess": "Alimento creato con successo",
+      "createError": "Errore nella creazione dell'alimento",
+      "updateSuccess": "Alimento aggiornato con successo",
+      "updateError": "Errore nell'aggiornamento dell'alimento",
+      "deleteSuccess": "Alimento eliminato con successo",
+      "deleteError": "Errore nell'eliminazione dell'alimento"
     }
   },
   "Utils": {

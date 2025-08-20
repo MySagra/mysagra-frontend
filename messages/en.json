@@ -61,7 +61,11 @@
       "description": "This action <strong>cannot be undone</strong>, if you delete the order the stats will change.",
       "buttonText": "Delete Order"
     },
-    "ordersManagement": "Orders Management"
+    "ordersManagement": "Orders Management",
+    "toast": {
+      "deleteSuccess": "Order deleted successfully",
+      "deleteError": "Error deleting order"
+    }
   },
   "Admin": {
     "Login": {
@@ -107,11 +111,6 @@
       },
       "password": {
         "placeholder": "Create a password"
-      },
-      "delete": {
-        "title": "Are you sure you want to delete this user?",
-        "description": "This action <strong>cannot be undone</strong>, if you delete the user their data will be lost.",
-        "buttonText": "Delete User"
       }
     },
     "formFields": {
@@ -125,6 +124,19 @@
       "usernameLength": "Username must be at least 4 characters long",
       "passwordLength": "Password must be at least 8 characters long",
       "role": "Role is required"
+    },
+    "delete": {
+      "title": "Are you sure you want to delete this user?",
+      "description": "This action <strong>cannot be undone</strong>, if you delete the user their data will be lost.",
+      "buttonText": "Delete User"
+    },
+    "toast": {
+      "createSuccess": "User created successfully",
+      "createError": "Error creating user",
+      "updateSuccess": "User updated successfully",
+      "updateError": "Error updating user",
+      "deleteSuccess": "User deleted successfully",
+      "deleteError": "Error deleting user"
     }
   },
   "Analytics": {
@@ -184,6 +196,14 @@
       "title": "Are you sure you want to delete this category?",
       "description": "This action <strong>cannot be undone</strong>, if you delete the category you will lost all foods in this category!",
       "buttonText": "Delete Category"
+    },
+    "toast": {
+      "createSuccess": "Category created successfully",
+      "createError": "Error creating category",
+      "updateSuccess": "Category updated successfully",
+      "updateError": "Error updating category",
+      "deleteSuccess": "Category deleted successfully",
+      "deleteError": "Error deleting category"
     }
   },
   "Food": {
@@ -237,6 +257,14 @@
       "title": "Are you sure you want to delete this food?",
       "description": "This action <strong>cannot be undone</strong>, if you delete the food you will lost all data related to this food!",
       "buttonText": "Delete Food"
+    },
+    "toast": {
+      "createSuccess": "Food created successfully",
+      "createError": "Error creating food",
+      "updateSuccess": "Food updated successfully",
+      "updateError": "Error updating food",
+      "deleteSuccess": "Food deleted successfully",
+      "deleteError": "Error deleting food"
     }
   },
   "Utils": {

@@ -32,8 +32,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Logo from "@/components/logo";
 import { useTranslations } from "next-intl";
+import { useTableService } from "@/contexts/ServiceTableContext";
 
 export default function Home() {
+  const tableServiceEnabled = useTableService();
+
   const t = useTranslations("CustomerLoginPage")
   const { setOrder } = useOrder();
   const router = useRouter();
@@ -53,7 +56,7 @@ export default function Home() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       customer: "",
-      table: "", // deve essere stringa, non number o undefined
+      table: tableServiceEnabled ? "" : "1"
     }
   });
 
@@ -100,19 +103,24 @@ export default function Home() {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="table"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('table')}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t('tablePlaceholder')} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {
+                  tableServiceEnabled ?
+                    <FormField
+                      control={form.control}
+                      name="table"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{t('table')}</FormLabel>
+                          <FormControl>
+                            <Input placeholder={t('tablePlaceholder')} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    : <></>
+                }
+
               </CardContent>
               <CardFooter className="flex justify-between">
                 <Button

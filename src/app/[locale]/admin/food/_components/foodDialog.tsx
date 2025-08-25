@@ -28,7 +28,7 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Category } from "@/types/category"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import {FoodFormValues, getFoodFormSchema } from "@/schemas/foodForm"
 import { useTranslations } from "next-intl"
@@ -44,13 +44,15 @@ export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogPr
 
     const t = useTranslations('Food');
 
+    const [ lastCategoryId, setLastCategoryId ] = useState<number | undefined>(food?.categoryId || categories[0]?.id);
+
     const form = useForm<FoodFormValues>({
         resolver: zodResolver(getFoodFormSchema(t)),
         defaultValues: {
             name: food?.name || "",
             description: food?.description || "",
             price: food?.price.toString() || "",
-            categoryId: food?.categoryId || (categories.length > 0 ? categories[0].id : undefined),
+            categoryId: lastCategoryId,
             available: food?.available ?? true
         }
     })
@@ -63,6 +65,10 @@ export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogPr
             }
         }
     }, [categories, food, form]);
+
+    useEffect(() => {
+        form.setValue('categoryId', lastCategoryId || 0);
+    }, [lastCategoryId])
 
     useEffect(() => {
         if (food) {
@@ -96,9 +102,11 @@ export function FoodDialog({ food, setFoods, setShow, categories }: FoodDialogPr
             setFoods(prev =>
                 [...prev, data]
             );
+            setLastCategoryId(values.categoryId);
         }).then(() => {
             toast.success(t('toast.createSuccess'));
         }).catch(err => {
+            console.log(err);
             toast.error(t('toast.createError'));
             console.error(err);
         })

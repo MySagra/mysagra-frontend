@@ -17,7 +17,10 @@ import { useEffect, useState } from "react";
 import React from "react";
 import { useTranslations } from "next-intl";
 
+import { useTableService } from "@/contexts/ServiceTableContext";
+
 export default function Checkout() {
+    const tableServiceEnabled = useTableService();
     const [order, setOrder] = useState<Order>();
     const router = useRouter();
     const t = useTranslations("Checkout");
@@ -57,9 +60,17 @@ export default function Checkout() {
                 <p>
                     {t('steps.step3')}
                 </p>
-                <p>
-                    {t('steps.step4')}
-                </p>
+                {
+                    tableServiceEnabled ?
+                        <p>
+                            {t('steps.step4')}
+                        </p>
+                        :
+                        <p>
+                            {t('steps.noTableStep')}
+                        </p>
+                }
+
 
             </div>
             <div className="w-full inset-shadow-xs fixed bottom-0 p-3 bg-secondary flex place-content-center">

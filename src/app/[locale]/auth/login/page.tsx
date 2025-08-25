@@ -29,7 +29,6 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import { ShieldAlert } from "lucide-react";
 import Logo from "@/components/logo";
 import { useTranslations } from "next-intl";
 
@@ -61,15 +60,7 @@ export default function Login() {
             const data = await res.json();
             if (!res.ok) {
                 form.reset();
-                toast(
-                    <div className="flex flex-row gap-1.5 items-start">
-                        <ShieldAlert />
-                        <div className="flex flex-col gap-0.5 text-left">
-                            <p className=" text-sm">{t('error')}</p>
-                            <p className="text-black/60">{data?.error || ""}</p>
-                        </div>
-                    </div>
-                )
+                toast.error(t('error'))
                 return;
             }
             localStorage.setItem("user", JSON.stringify(data));

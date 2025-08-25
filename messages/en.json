@@ -35,7 +35,8 @@
       "step1": "👉 Tell the cashier your order code",
       "step2": "🤑 Make the payment",
       "step3": "🍸 After paying, collect your drinks at the bar",
-      "step4": "🍕 Your food order will be served directly to your table"
+      "step4": "🍕 Your food order will be served directly to your table",
+      "noTableStep": "🗣️ When the order is ready, you will be called with the order code or the number on the receipt"
     },
     "dialog": {
       "trigger": "Create a new order",

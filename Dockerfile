@@ -25,8 +25,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build arguments
-ARG NEXT_PUBLIC_APP_NAME="MySagra"
-ENV NEXT_PUBLIC_APP_NAME=${NEXT_PUBLIC_APP_NAME}
+ARG APP_NAME=MySagra
+ENV NEXT_PUBLIC_APP_NAME=${APP_NAME}
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -67,4 +67,5 @@ ENV PORT=3000
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
+ENV ENABLE_TABLE_SERVICE=true
 CMD ["node", "server.js"]

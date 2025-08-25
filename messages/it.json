@@ -35,7 +35,8 @@
       "step1": "👉 Dì al cassiere il tuo codice ordine",
       "step2": "🤑 Effettua il pagamento",
       "step3": "🍸 Dopo aver pagato, ritira le tue bevande al bar",
-      "step4": "🍕 Il tuo ordine sarà servito direttamente al tuo tavolo"
+      "step4": "🍕 Il tuo ordine sarà servito direttamente al tuo tavolo",
+      "noTableStep": "🗣️ Quando l'ordine sarà pronto, verrai chiamato con il codice ordine oppure il numero sullo scontrino"
     },
     "dialog": {
       "trigger": "Crea un nuovo ordine",

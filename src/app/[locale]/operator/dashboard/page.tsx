@@ -32,7 +32,7 @@ export default function Dashboard() {
                     router.push("/auth/login");
                 }
                 if (res.status == 404) {
-                    toast(
+                    toast.info(
                         t('fetchError.title'),
                         {
                             description: t('fetchError.description'),

@@ -32,8 +32,8 @@
     "advise": "*Prepara i soldi per velocizzare il processo😉",
     "steps": {
       "title": "Cosa devo fare ora?",
-      "step1": "👉 Dì al cassiere il tuo codice ordine",
-      "step2": "🤑 Effettua il pagamento",
+      "step1": "👉 Vai in cassa e comunica il tuo codice ordine",
+      "step2": "👛 Effettua il pagamento alla cassa",
       "step3": "🍸 Dopo aver pagato, ritira le tue bevande al bar",
       "step4": "🍕 Il tuo ordine sarà servito direttamente al tuo tavolo",
       "noTableStep": "🗣️ Quando l'ordine sarà pronto, verrai chiamato con il codice ordine oppure il numero sullo scontrino"

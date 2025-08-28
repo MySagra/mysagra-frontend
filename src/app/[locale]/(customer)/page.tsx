@@ -77,7 +77,7 @@ export default function Home() {
 
   return (
     <div className="h-screen w-full flex place-content-center items-center">
-      <h1 className="text-primary absolute top-0 p-3 md:left-0 font-bold text-lg">{"My Sagra"}</h1>
+      <h1 className="text-primary absolute top-0 p-3 md:left-0 font-bold text-lg">{process.env.NEXT_PUBLIC_APP_NAME}</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="h-screen w-full flex flex-col items-center place-content-center">
@@ -137,10 +137,10 @@ export default function Home() {
         </form>
       </Form >
       <div className=" absolute bottom-0 text-sm">
-        <Link href={"https://www.nicolospampa.it/"} target="_blank" rel="noopener noreferrer" >
+        <Link href={"https://www.mysagra.com/"} target="_blank" rel="noopener noreferrer" >
           {"Powered by"}
           <Button variant={"link"} className="p-1.5">
-            {"Spampatti Nicolò"}
+            {"MySagra"}
           </Button>
         </Link>
       </div>

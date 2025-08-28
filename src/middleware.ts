@@ -26,7 +26,7 @@ export function middleware(request: NextRequest) {
       const localeMatch = finalPathname.match(/^\/([a-z]{2})\//);
       const locale = localeMatch ? localeMatch[1] : routing.defaultLocale;
 
-      return NextResponse.redirect(new URL(`/${locale}/auth/login`, request.url));
+      return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
     }
   }
 

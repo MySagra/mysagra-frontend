@@ -37,7 +37,7 @@ export function NavUser({
         }).then(() => {
             localStorage.removeItem("user");
             localStorage.removeItem("token");
-            router.replace("/auth/login");
+            router.replace("/login");
         });
     }
 

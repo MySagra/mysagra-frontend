@@ -29,7 +29,7 @@ export default function Dashboard() {
             setTimeout(() => setOrderUpdateLoading(false), 500);
             if (!res.ok) {
                 if (res.status !== 404 && res.status !== 500) {
-                    router.push("/auth/login");
+                    router.push("/login");
                 }
                 if (res.status == 404) {
                     toast.info(
@@ -59,7 +59,7 @@ export default function Dashboard() {
         }).then(() => {
             localStorage.removeItem("user");
             localStorage.removeItem("token");
-            router.replace("/auth/login");
+            router.replace("/login");
         });
     }
 

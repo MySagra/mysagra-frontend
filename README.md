@@ -130,7 +130,7 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
 
-To access the admin panel, navigate to [http://localhost:3000/auth/login](http://localhost:3000/auth/login).
+To access the admin panel, navigate to [http://localhost:3000/auth/login](http://localhost:3000/login).
 
 The default admin credentials are:
 - **Username:** `admin`
